@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540" role="img" aria-label="Common policy source feeding scoped content sets through a publication system into discrete CPS outputs">
+  <style>
+    .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    .label { font: 600 14px 'Segoe UI','Helvetica Neue',Arial,sans-serif; }
+    .label13 { font: 600 13px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#26323F; }
+    .boxsub { font: 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    .cap { font: italic 12.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    .mono { font: 600 13px 'SF Mono',Consolas,Menlo,monospace; fill:#7A5514; }
+  </style>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#66788A"/>
+    </marker>
+    <marker id="ahAmber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#A8711C"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="540" fill="#FFFFFF"/>
+
+  <text class="eyebrow" x="33" y="40">COMMON SOURCE, DISCRETE OUTPUTS</text>
+
+  <!-- Common policy source -->
+  <rect x="330" y="64" width="300" height="56" rx="9" fill="#FAF2E3" stroke="#A8711C" stroke-width="2"/>
+  <text class="label" x="480" y="88" text-anchor="middle" fill="#A8711C">Common policy source</text>
+  <text class="boxsub" x="480" y="106" text-anchor="middle">shared commitments, maintained once</text>
+
+  <!-- fan arrows to three content sets -->
+  <line x1="410" y1="120" x2="252" y2="166" stroke="#A8711C" stroke-width="1.6" marker-end="url(#ahAmber)"/>
+  <line x1="480" y1="120" x2="480" y2="166" stroke="#A8711C" stroke-width="1.6" marker-end="url(#ahAmber)"/>
+  <line x1="550" y1="120" x2="708" y2="166" stroke="#A8711C" stroke-width="1.6" marker-end="url(#ahAmber)"/>
+
+  <!-- three scoped content sets: w=190 h=52, centers 240/480/720, y=170 -->
+  <rect x="145" y="170" width="190" height="52" rx="9" fill="#F4F7F9" stroke="#9AA9B5" stroke-width="1.4"/>
+  <text class="label13" x="240" y="192" text-anchor="middle">TLS content</text>
+  <text class="boxsub" x="240" y="209" text-anchor="middle">common + TLS-specific</text>
+
+  <rect x="385" y="170" width="190" height="52" rx="9" fill="#F4F7F9" stroke="#9AA9B5" stroke-width="1.4"/>
+  <text class="label13" x="480" y="192" text-anchor="middle">S/MIME content</text>
+  <text class="boxsub" x="480" y="209" text-anchor="middle">common + S/MIME-specific</text>
+
+  <rect x="625" y="170" width="190" height="52" rx="9" fill="#F4F7F9" stroke="#9AA9B5" stroke-width="1.4"/>
+  <text class="label13" x="720" y="192" text-anchor="middle">Code Signing content</text>
+  <text class="boxsub" x="720" y="209" text-anchor="middle">common + CS-specific</text>
+
+  <!-- arrows into publication system -->
+  <line x1="240" y1="222" x2="240" y2="252" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah)"/>
+  <line x1="480" y1="222" x2="480" y2="252" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah)"/>
+  <line x1="720" y1="222" x2="720" y2="252" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah)"/>
+
+  <!-- Publication system bar -->
+  <rect x="120" y="256" width="720" height="54" rx="9" fill="#E7F3F0" stroke="#1E7A6C" stroke-width="2"/>
+  <text class="label" x="480" y="279" text-anchor="middle" fill="#1E7A6C">Publication system</text>
+  <text class="boxsub" x="480" y="297" text-anchor="middle">review &#183; approval &#183; rendering &#183; change history</text>
+
+  <!-- arrows to outputs -->
+  <line x1="240" y1="310" x2="240" y2="340" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah)"/>
+  <line x1="480" y1="310" x2="480" y2="340" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah)"/>
+  <line x1="720" y1="310" x2="720" y2="340" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah)"/>
+
+  <!-- three CPS output documents: w=170 h=104, centers 240/480/720, y=344 -->
+  <path d="M 155 344 h 152 l 18 18 v 86 h -170 z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 307 344 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="240" y="392" text-anchor="middle">TLS CPS</text>
+  <text class="boxsub" x="240" y="411" text-anchor="middle">discrete, scoped output</text>
+
+  <path d="M 395 344 h 152 l 18 18 v 86 h -170 z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 547 344 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="480" y="392" text-anchor="middle">S/MIME CPS</text>
+  <text class="boxsub" x="480" y="411" text-anchor="middle">discrete, scoped output</text>
+
+  <path d="M 635 344 h 152 l 18 18 v 86 h -170 z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 787 344 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="720" y="392" text-anchor="middle">Code Signing CPS</text>
+  <text class="boxsub" x="720" y="411" text-anchor="middle">discrete, scoped output</text>
+
+  <!-- closing caption -->
+  <text class="cap" x="480" y="478" text-anchor="middle">A change to a shared commitment is made once at the source&#8230;</text>
+  <text class="cap" x="480" y="497" text-anchor="middle">&#8230;and lands consistently in every scoped output.</text>
+
+  <line x1="33" y1="522" x2="927" y2="522" stroke="#D3DCE3" stroke-width="1"/>
+</svg>

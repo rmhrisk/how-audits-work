@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Audits Work, from Management Assertions to Control Matrices</title>
+<meta name="description" content="What a management assertion is, why the control matrix is the scope of the audit, and why root programs are forcing CAs toward discrete, testable CPS documents.">
+<style>
+  :root {
+    --ink: #26323F;
+    --muted: #66788A;
+    --hairline: #D3DCE3;
+    --indigo: #3F5DA8;
+    --teal: #1E7A6C;
+    --amber: #A8711C;
+    --violet: #6D4A9C;
+    --rust: #A84A38;
+    --green: #2E7D46;
+    --teal-tint: #E7F3F0;
+    --paper: #FFFFFF;
+    --sans: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --serif: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif;
+    --mono: 'SF Mono', Consolas, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font: 17px/1.65 var(--serif);
+  }
+  .masthead {
+    position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.94);
+    border-bottom: 1px solid var(--hairline); backdrop-filter: blur(4px);
+  }
+  .masthead a {
+    display: block; max-width: 860px; margin: 0 auto; padding: 10px 20px;
+    font: 600 11px var(--sans); letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 0 20px 80px; }
+  .byline { font: 600 11px var(--sans); letter-spacing: 2.5px; color: var(--muted);
+    text-transform: uppercase; margin: 48px 0 18px; }
+  h1 { font: 700 42px/1.12 var(--sans); letter-spacing: -0.5px; margin: 0 0 14px; }
+  .standfirst { font: italic 400 20px/1.5 var(--serif); color: var(--muted); margin: 0 0 34px; }
+  figure { margin: 34px -70px; }
+  @media (max-width: 900px) { figure { margin: 30px 0; } }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption { font: italic 13px var(--serif); color: var(--muted); text-align: center; margin-top: 6px; }
+  .contents { border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline);
+    padding: 22px 0 26px; margin: 40px 0 12px; }
+  .contents .clabel { font: 600 11px var(--sans); letter-spacing: 2.5px; color: var(--muted);
+    text-transform: uppercase; margin-bottom: 14px; }
+  .contents ol { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 40px; }
+  @media (max-width: 640px) { .contents ol { columns: 1; } }
+  .contents li { margin: 0 0 8px; break-inside: avoid; font: 15px var(--sans); }
+  .contents li.part { font: 600 11px var(--sans); letter-spacing: 2px; text-transform: uppercase;
+    color: var(--amber); margin: 14px 0 8px; }
+  .contents li.part:first-child { margin-top: 0; }
+  .contents a { color: var(--ink); text-decoration: none; }
+  .contents a:hover { color: var(--indigo); }
+  .contents .n { display: inline-block; min-width: 26px; font: 700 13px var(--sans); color: var(--indigo); }
+  .partline { margin: 64px 0 6px; font: 600 12px var(--sans); letter-spacing: 3px;
+    text-transform: uppercase; color: var(--amber); }
+  h2.part { font: 700 32px/1.15 var(--sans); margin: 0 0 8px; }
+  h2.sec { font: 700 25px/1.2 var(--sans); margin: 52px 0 14px; }
+  h2.sec .n { color: var(--indigo); margin-right: 10px; font-size: 20px; vertical-align: 2px; }
+  p { margin: 0 0 18px; }
+  strong { font-weight: 700; }
+  em { font-style: italic; }
+  .chain { text-align: center; font: 700 15px var(--sans); color: var(--ink); margin: 24px 0; }
+  blockquote { margin: 30px 0; padding: 4px 0 4px 24px; border-left: 3px solid var(--teal);
+    font: italic 500 19px/1.5 var(--serif); color: var(--ink); }
+  .lesson { background: var(--teal-tint); border-left: 3px solid var(--teal);
+    padding: 14px 18px; margin: 26px 0; }
+  .lesson .klabel { font: 600 10.5px var(--sans); letter-spacing: 2px; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 6px; }
+  .lesson p { margin: 0; font: 15.5px/1.55 var(--sans); }
+  table { border-collapse: collapse; width: 100%; margin: 24px 0; font: 14.5px var(--sans); }
+  th, td { border: 1px solid var(--hairline); padding: 9px 12px; text-align: left; vertical-align: top; }
+  th { background: #EFF3F6; font-weight: 700; }
+  .limits, .sources { border-top: 1px solid var(--hairline); margin-top: 56px; padding-top: 28px; }
+  .limits h3, .sources h3, .quiz h3 { font: 700 20px var(--sans); margin: 0 0 14px; }
+  .sources ol { padding-left: 20px; font: 14.5px/1.6 var(--sans); }
+  .sources li { margin-bottom: 10px; }
+  a { color: var(--indigo); }
+  .quiz { border-top: 1px solid var(--hairline); margin-top: 56px; padding-top: 28px; }
+  .quiz .qintro { font: 15px var(--sans); color: var(--muted); margin-bottom: 18px; }
+  #qbox { border: 1px solid var(--hairline); border-radius: 12px; padding: 22px 24px; }
+  .q-progress { font: 600 10.5px var(--sans); letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 12px; }
+  .q-question { font: 600 17px/1.4 var(--sans); margin-bottom: 16px; }
+  .q-opt { display: block; width: 100%; text-align: left; font: 15px var(--sans); color: var(--ink);
+    padding: 10px 14px; margin-bottom: 8px; border: 1px solid var(--hairline); border-radius: 8px;
+    background: #fff; cursor: pointer; }
+  .q-opt:hover:not(:disabled) { border-color: var(--indigo); }
+  .q-opt:disabled { cursor: default; }
+  .q-opt.correct { border-color: var(--green); background: #EAF4EE; }
+  .q-opt.wrong { border-color: var(--rust); background: #F8ECE9; }
+  .q-explain { font: italic 14.5px/1.55 var(--serif); color: var(--muted); margin: 12px 0 16px; }
+  .qbtn { font: 600 14px var(--sans); color: #fff; background: var(--teal); border: 0;
+    border-radius: 8px; padding: 10px 22px; cursor: pointer; }
+  .q-score { font: 700 22px var(--sans); margin-bottom: 6px; }
+  .q-verdict { font: italic 16px var(--serif); color: var(--muted); margin-bottom: 18px; }
+  footer { border-top: 1px solid var(--hairline); margin-top: 56px; padding: 26px 0 10px;
+    font: 14px var(--sans); color: var(--muted); }
+  footer a { color: var(--indigo); text-decoration: none; }
+</style>
+</head>
+<body id="top">
+<div class="masthead"><a href="#top">How Audits Work</a></div>
+<main>
+  <div class="byline">Unmitigated Risk &middot; August 2026</div>
+  <h1>How Audits Work, from Management Assertions to Control Matrices</h1>
+  <p class="standfirst">What an audit actually tests, why the control matrix is the scope of the whole exercise, and why the root programs are forcing CAs toward documents precise enough to test.</p>
+
+  <figure><div id="fw-fig1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 240"  role="img" aria-label="The audit traceability chain: requirement, control, policy or CPS, evidence, auditor test, conclusion">
+  <style>
+    #fw-fig1 .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    #fw-fig1 .subtitle { font: italic 13px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig1 .label { font: 600 14px 'Segoe UI','Helvetica Neue',Arial,sans-serif; }
+    #fw-fig1 .sub { font: 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+  </style>
+  <defs>
+    <marker id="ah-fw-fig1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#66788A"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="240" fill="#FFFFFF"/>
+
+  <text class="eyebrow" x="33" y="40">THE AUDIT TRACEABILITY CHAIN</text>
+  <text class="subtitle" x="33" y="62">Every audit conclusion should trace back, link by link, to a requirement.</text>
+
+  <!-- blocks: w=124, gap=30, x0=33 -->
+  <!-- Requirement -->
+  <rect x="33" y="96" width="124" height="58" rx="9" fill="#EDF1FA" stroke="#3F5DA8" stroke-width="1.5"/>
+  <text class="label" x="95" y="130" text-anchor="middle" fill="#3F5DA8">Requirement</text>
+  <text class="sub" x="95" y="176" text-anchor="middle">what must</text>
+  <text class="sub" x="95" y="191" text-anchor="middle">be true</text>
+  <line x1="161" y1="125" x2="181" y2="125" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig1)"/>
+
+  <!-- Control -->
+  <rect x="187" y="96" width="124" height="58" rx="9" fill="#E7F3F0" stroke="#1E7A6C" stroke-width="1.5"/>
+  <text class="label" x="249" y="130" text-anchor="middle" fill="#1E7A6C">Control</text>
+  <text class="sub" x="249" y="176" text-anchor="middle">what the CA does</text>
+  <text class="sub" x="249" y="191" text-anchor="middle">about it</text>
+  <line x1="315" y1="125" x2="335" y2="125" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig1)"/>
+
+  <!-- Policy / CPS -->
+  <rect x="341" y="96" width="124" height="58" rx="9" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.5"/>
+  <text class="label" x="403" y="130" text-anchor="middle" fill="#A8711C">Policy / CPS</text>
+  <text class="sub" x="403" y="176" text-anchor="middle">where the practice</text>
+  <text class="sub" x="403" y="191" text-anchor="middle">is documented</text>
+  <line x1="469" y1="125" x2="489" y2="125" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig1)"/>
+
+  <!-- Evidence -->
+  <rect x="495" y="96" width="124" height="58" rx="9" fill="#F1EDF8" stroke="#6D4A9C" stroke-width="1.5"/>
+  <text class="label" x="557" y="130" text-anchor="middle" fill="#6D4A9C">Evidence</text>
+  <text class="sub" x="557" y="176" text-anchor="middle">what actually</text>
+  <text class="sub" x="557" y="191" text-anchor="middle">happened</text>
+  <line x1="623" y1="125" x2="643" y2="125" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig1)"/>
+
+  <!-- Auditor test -->
+  <rect x="649" y="96" width="124" height="58" rx="9" fill="#F8ECE9" stroke="#A84A38" stroke-width="1.5"/>
+  <text class="label" x="711" y="130" text-anchor="middle" fill="#A84A38">Auditor test</text>
+  <text class="sub" x="711" y="176" text-anchor="middle">does the evidence</text>
+  <text class="sub" x="711" y="191" text-anchor="middle">match the claim</text>
+  <line x1="777" y1="125" x2="797" y2="125" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig1)"/>
+
+  <!-- Conclusion -->
+  <rect x="803" y="96" width="124" height="58" rx="9" fill="#EAF4EE" stroke="#2E7D46" stroke-width="1.5"/>
+  <text class="label" x="865" y="130" text-anchor="middle" fill="#2E7D46">Conclusion</text>
+  <text class="sub" x="865" y="176" text-anchor="middle">is the assertion</text>
+  <text class="sub" x="865" y="191" text-anchor="middle">fairly stated</text>
+
+  <line x1="33" y1="218" x2="927" y2="218" stroke="#D3DCE3" stroke-width="1"/>
+</svg>
+</div><figcaption>Every audit conclusion should trace back, link by link, to a requirement.</figcaption></figure>
+
+  <nav class="contents">
+    <div class="clabel">Contents</div>
+    <ol>
+      <li class="part">Part I &middot; The Machinery of an Audit</li>
+      <li><span class="n">1</span><a href="#s1">The Core Idea</a></li>
+      <li><span class="n">2</span><a href="#s2">The Management Assertion</a></li>
+      <li><span class="n">3</span><a href="#s3">The Audit Artifact Hierarchy</a></li>
+      <li><span class="n">4</span><a href="#s4">The Control Matrix Is the Map</a></li>
+      <li class="part">Part II &middot; Documents and Evidence</li>
+      <li><span class="n">5</span><a href="#s5">CP, CPS, and Where They Live</a></li>
+      <li><span class="n">6</span><a href="#s6">Documentation Is Not Evidence</a></li>
+      <li><span class="n">7</span><a href="#s7">Walking One Trace End to End</a></li>
+      <li class="part">Part III &middot; The Structural Shift</li>
+      <li><span class="n">8</span><a href="#s8">Monolithic Versus Discrete CPS Documents</a></li>
+      <li><span class="n">9</span><a href="#s9">The Root Programs Have Picked a Side</a></li>
+      <li><span class="n">10</span><a href="#s10">Why This Becomes an Automation Problem</a></li>
+      <li class="part">&nbsp;</li>
+      <li><span class="n">&#10003;</span><a href="#quiz">Check your understanding</a></li>
+    </ol>
+  </nav>
+
+  <div class="partline" id="p1">Part I</div>
+  <h2 class="part">The Machinery of an Audit</h2>
+
+  <h2 class="sec" id="s1"><span class="n">1</span>The Core Idea</h2>
+  <p>An audit is not an auditor arriving and asking an organization to prove it is compliant. Before fieldwork begins, the organization prepares a body of material that defines what is being audited, what management claims to be true, and how those claims can be tested.</p>
+  <p>A useful way to think about the whole exercise is as a traceability system.</p>
+  <p class="chain">Requirement &#8594; Control &#8594; Policy or Procedure &#8594; Evidence &#8594; Auditor Test &#8594; Conclusion</p>
+  <p>Every audit conclusion should trace back, link by link, to a requirement. The artifact that makes this traceability possible is the <strong>control matrix</strong>. The rest of this post walks that chain, and then looks at what happens when one of its links, the policy documents of a publicly trusted Certification Authority, comes under pressure to change shape.</p>
+
+  <h2 class="sec" id="s2"><span class="n">2</span>The Management Assertion</h2>
+  <p>For attestation-style audits, management begins by defining the scope of the examination and making an assertion about the system being examined. The exact form depends on the framework. SOC examinations, for example, distinguish between SOC 1 and SOC 2, which address different subject matter (financial reporting controls versus security and operational criteria), and between Type 1 and Type 2 reports.</p>
+  <p>A <strong>Type 1</strong> report evaluates whether controls are suitably designed at a single point in time. A <strong>Type 2</strong> report goes further, evaluating whether those controls actually operated effectively over a defined period, typically six to twelve months.</p>
+  <p>Both are attestation engagements, which means both start the same way. Management makes an assertion. Stripped down, that assertion says something like <em>&ldquo;ACME, Inc. operated its services in conformance with the applicable criteria.&rdquo;</em> The auditor&rsquo;s job is not to discover what the organization does from scratch. It is to test whether that assertion is fairly stated.</p>
+  <p>WebTrust for CAs engagements follow the same assertion-plus-period structure as a Type 2, which is why everything below maps cleanly onto the WebPKI.<a href="#r6"><sup>[6]</sup></a></p>
+  <p>This raises an obvious question for a CA that has not started issuing yet. It has no period to attest to. The Baseline Requirements handle that case in section 8.1 with a <strong>point-in-time readiness assessment</strong>, which evaluates whether the controls are designed and implemented rather than whether they operated. It must be completed no earlier than twelve months before the first publicly trusted certificate is issued, and a full audit has to follow within ninety days of that first issuance.<a href="#r1"><sup>[1]</sup></a> Two things about it are easy to get wrong. It is not the same instrument as a point-in-time audit, which is typically used to confirm that findings in a qualified report have been remediated, and it does not substitute for a period audit. In the terms used here, a readiness assessment tests the matrix and the design of the controls, in advance of the operating evidence that only a period of running can produce.</p>
+  <p>It is also worth being precise about what a period audit delivers, because the word &ldquo;period&rdquo; can promise more than it means. The auditor does not observe the whole period. They test samples drawn from it, they do that work during and after the period, and then they issue a letter. By the time anyone reads it, the window it describes has closed.</p>
+  <figure><div id="fw-fig10"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500"  role="img" aria-label="Timeline showing that an audit covers a period that has already closed, samples within that period, and says nothing about the interval between the period end and today">
+  <style>
+    #fw-fig10 .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    #fw-fig10 .subtitle { font: italic 13px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig10 .side { font: 600 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2px; }
+    #fw-fig10 .inbar { font: 11.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; }
+    #fw-fig10 .tickl { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#26323F; }
+    #fw-fig10 .ticks { font: 10px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig10 .boxh { font: 600 13px 'Segoe UI','Helvetica Neue',Arial,sans-serif; }
+    #fw-fig10 .boxb { font: 11.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#26323F; }
+    #fw-fig10 .cap { font: italic 13px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+  </style>
+  <defs>
+    <marker id="ah-fw-fig10" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#66788A"/>
+    </marker>
+    <pattern id="hatch-fw-fig10" width="8" height="8" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#C6AE84" stroke-width="1.5"/>
+    </pattern>
+  </defs>
+  <rect x="0" y="0" width="960" height="500" fill="#FFFFFF"/>
+  <text class="eyebrow" x="33" y="40">AN AUDIT IS A RETROSPECTIVE</text>
+  <text class="subtitle" x="33" y="62">The opinion samples a period, and that period has already closed.</text>
+  <text class="side" x="60" y="112" fill="#3F5DA8">WHAT THE CA ACTUALLY DID</text>
+  <rect x="60" y="124" width="840" height="40" rx="7" fill="#EDF1FA" stroke="#3F5DA8" stroke-width="1.5"/>
+  <line x1="78" y1="132" x2="78" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="107" y1="132" x2="107" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="136" y1="132" x2="136" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="165" y1="132" x2="165" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="194" y1="132" x2="194" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="223" y1="132" x2="223" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="252" y1="132" x2="252" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="281" y1="132" x2="281" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="310" y1="132" x2="310" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="339" y1="132" x2="339" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="368" y1="132" x2="368" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="397" y1="132" x2="397" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="426" y1="132" x2="426" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="455" y1="132" x2="455" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="484" y1="132" x2="484" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="513" y1="132" x2="513" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="542" y1="132" x2="542" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="571" y1="132" x2="571" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="600" y1="132" x2="600" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="629" y1="132" x2="629" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="658" y1="132" x2="658" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="687" y1="132" x2="687" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="716" y1="132" x2="716" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="745" y1="132" x2="745" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="774" y1="132" x2="774" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="803" y1="132" x2="803" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="832" y1="132" x2="832" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="861" y1="132" x2="861" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <line x1="890" y1="132" x2="890" y2="156" stroke="#3F5DA8" stroke-width="1.5" opacity="0.42"/>
+  <text class="inbar" x="70" y="184" fill="#66788A">Every issuance, revocation, key access, and configuration change, continuously.</text>
+  <text class="side" x="60" y="222" fill="#1E7A6C">WHAT THE AUDIT EXAMINED</text>
+  <rect x="60" y="234" width="840" height="40" rx="7" fill="none" stroke="#D3DCE3" stroke-width="1.3" stroke-dasharray="4 4"/>
+  <rect x="150" y="234" width="440" height="40" rx="7" fill="#E7F3F0" stroke="#1E7A6C" stroke-width="2.2"/>
+  <line x1="178" y1="240" x2="178" y2="268" stroke="#1E7A6C" stroke-width="2.4"/>
+  <circle cx="178" cy="238" r="3.2" fill="#1E7A6C"/>
+  <line x1="232" y1="240" x2="232" y2="268" stroke="#1E7A6C" stroke-width="2.4"/>
+  <circle cx="232" cy="238" r="3.2" fill="#1E7A6C"/>
+  <line x1="286" y1="240" x2="286" y2="268" stroke="#1E7A6C" stroke-width="2.4"/>
+  <circle cx="286" cy="238" r="3.2" fill="#1E7A6C"/>
+  <line x1="352" y1="240" x2="352" y2="268" stroke="#1E7A6C" stroke-width="2.4"/>
+  <circle cx="352" cy="238" r="3.2" fill="#1E7A6C"/>
+  <line x1="424" y1="240" x2="424" y2="268" stroke="#1E7A6C" stroke-width="2.4"/>
+  <circle cx="424" cy="238" r="3.2" fill="#1E7A6C"/>
+  <line x1="486" y1="240" x2="486" y2="268" stroke="#1E7A6C" stroke-width="2.4"/>
+  <circle cx="486" cy="238" r="3.2" fill="#1E7A6C"/>
+  <line x1="552" y1="240" x2="552" y2="268" stroke="#1E7A6C" stroke-width="2.4"/>
+  <circle cx="552" cy="238" r="3.2" fill="#1E7A6C"/>
+  <rect x="590" y="234" width="280" height="40" rx="7" fill="url(#hatch-fw-fig10)" stroke="#A8711C" stroke-width="1.4" stroke-dasharray="5 3" opacity="0.85"/>
+  <text class="inbar" x="730" y="259" text-anchor="middle" fill="#8A6414" font-weight="600">no opinion covers this</text>
+  <path d="M 520 292 v 8 H 660 v -8" fill="none" stroke="#66788A" stroke-width="1.2"/>
+  <text class="ticks" x="590" y="316" text-anchor="middle">fieldwork &amp; reporting</text>
+  <line x1="60" y1="292" x2="900" y2="292" stroke="#B9C4CD" stroke-width="1.3" marker-end="url(#ah-fw-fig10)"/>
+  <line x1="150" y1="286" x2="150" y2="298" stroke="#1E7A6C" stroke-width="2"/>
+  <text class="tickl" x="150" y="338" text-anchor="middle" fill="#1E7A6C">Period</text>
+  <text class="ticks" x="150" y="352" text-anchor="middle">starts</text>
+  <line x1="590" y1="286" x2="590" y2="298" stroke="#1E7A6C" stroke-width="2"/>
+  <text class="tickl" x="590" y="338" text-anchor="middle" fill="#1E7A6C">Period</text>
+  <text class="ticks" x="590" y="352" text-anchor="middle">ends</text>
+  <line x1="660" y1="286" x2="660" y2="298" stroke="#66788A" stroke-width="2"/>
+  <text class="tickl" x="660" y="338" text-anchor="middle" fill="#66788A">Report</text>
+  <text class="ticks" x="660" y="352" text-anchor="middle">issued</text>
+  <line x1="870" y1="286" x2="870" y2="298" stroke="#26323F" stroke-width="2"/>
+  <text class="tickl" x="870" y="338" text-anchor="middle" fill="#26323F">Today</text>
+  <line x1="870" y1="120" x2="870" y2="286" stroke="#26323F" stroke-width="1.3" stroke-dasharray="5 4" opacity="0.55"/>
+  <rect x="60" y="376" width="404" height="76" rx="9" fill="#E7F3F0" stroke="#1E7A6C" stroke-width="1.5"/>
+  <text class="boxh" x="82" y="401" fill="#1E7A6C">Sampled, not exhaustive</text>
+  <text class="boxb" x="82" y="422">Within the period the auditor tests a sample. A clean</text>
+  <text class="boxb" x="82" y="439">opinion does not mean every event was examined.</text>
+  <rect x="496" y="376" width="404" height="76" rx="9" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.5"/>
+  <text class="boxh" x="518" y="401" fill="#A8711C">Retrospective, not current</text>
+  <text class="boxb" x="518" y="422">The opinion closes with the period. Everything since</text>
+  <text class="boxb" x="518" y="439">carries no assurance from this letter.</text>
+  <text class="cap" x="480" y="476" text-anchor="middle">One letter, one closed window. Trust in the interval after it is inference, not evidence.</text>
+  <line x1="33" y1="490" x2="927" y2="490" stroke="#D3DCE3" stroke-width="1"/>
+</svg>
+</div></figure>
+  <p>Both halves of that picture matter. Inside the period, a clean opinion means the sampled tests passed, not that every issuance was examined. After the period, the letter is simply silent. A CA that was conformant through December and broke something in January holds an audit letter that is both accurate and useless for the question you actually have. This is the structural reason misissuance is usually caught by Certificate Transparency monitoring, linters, and problem reports rather than by audits, and it is the gap that continuous assurance exists to close.<a href="https://rmhrisk.github.io/continuous-assurance/">&#8239;&rarr;</a></p>
+  <div class="lesson"><div class="klabel">Key lesson</div><p>The assertion is the object under test. The audit exists to decide whether it is fairly stated, not to rediscover the organization from scratch.</p></div>
+
+  <h2 class="sec" id="s3"><span class="n">3</span>The Audit Artifact Hierarchy</h2>
+  <p>The audit package can be understood as a hierarchy. Each layer answers a different question. What does management claim is true? Which services, systems, periods, and criteria are examined? How does the organization believe each requirement is satisfied? What does it say it does? What actually happened? Does the evidence support the claim?</p>
+  <figure><div id="fw-fig2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 690"  role="img" aria-label="The audit artifact hierarchy from management assertion down to audit conclusion">
+  <style>
+    #fw-fig2 .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    #fw-fig2 .label { font: 600 14px 'Segoe UI','Helvetica Neue',Arial,sans-serif; }
+    #fw-fig2 .boxsub { font: 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig2 .cap { font: italic 12px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig2 .mono { font: 600 11px 'SF Mono',Consolas,Menlo,monospace; fill:#7A5514; }
+  </style>
+  <defs>
+    <marker id="ah-fw-fig2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#66788A"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="690" fill="#FFFFFF"/>
+
+  <text class="eyebrow" x="33" y="40">THE AUDIT ARTIFACT HIERARCHY</text>
+
+  <!-- Management assertion -->
+  <rect x="190" y="70" width="340" height="46" rx="9" fill="#EFF3F6" stroke="#26323F" stroke-width="1.5"/>
+  <text class="label" x="360" y="98" text-anchor="middle" fill="#26323F">Management assertion</text>
+  <line x1="546" y1="93" x2="704" y2="93" stroke="#D3DCE3" stroke-width="1" stroke-dasharray="2 4"/>
+  <text class="cap" x="712" y="88">What does management</text>
+  <text class="cap" x="712" y="104">claim is true?</text>
+  <line x1="360" y1="116" x2="360" y2="138" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig2)"/>
+
+  <!-- Audit scope -->
+  <rect x="190" y="142" width="340" height="46" rx="9" fill="#EDF1FA" stroke="#3F5DA8" stroke-width="1.5"/>
+  <text class="label" x="360" y="170" text-anchor="middle" fill="#3F5DA8">Audit scope &amp; applicable criteria</text>
+  <line x1="546" y1="165" x2="704" y2="165" stroke="#D3DCE3" stroke-width="1" stroke-dasharray="2 4"/>
+  <text class="cap" x="712" y="152">Which services, systems,</text>
+  <text class="cap" x="712" y="168">periods, and criteria</text>
+  <text class="cap" x="712" y="184">are examined?</text>
+  <line x1="360" y1="188" x2="360" y2="210" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig2)"/>
+
+  <!-- Control matrix (emphasized) -->
+  <rect x="190" y="214" width="340" height="58" rx="9" fill="#E7F3F0" stroke="#1E7A6C" stroke-width="2.5"/>
+  <text class="label" x="360" y="238" text-anchor="middle" fill="#1E7A6C">Control matrix</text>
+  <text class="boxsub" x="360" y="257" text-anchor="middle">requirement &#8594; control &#8594; document &#8594; evidence</text>
+  <line x1="546" y1="243" x2="704" y2="243" stroke="#D3DCE3" stroke-width="1" stroke-dasharray="2 4"/>
+  <text class="cap" x="712" y="230">How does the CA believe</text>
+  <text class="cap" x="712" y="246">each requirement</text>
+  <text class="cap" x="712" y="262">is satisfied?</text>
+
+  <!-- fan-out lines from matrix bottom to five document cards -->
+  <line x1="250" y1="272" x2="88"  y2="308" stroke="#66788A" stroke-width="1.2" marker-end="url(#ah-fw-fig2)"/>
+  <line x1="305" y1="272" x2="224" y2="308" stroke="#66788A" stroke-width="1.2" marker-end="url(#ah-fw-fig2)"/>
+  <line x1="360" y1="272" x2="360" y2="308" stroke="#66788A" stroke-width="1.2" marker-end="url(#ah-fw-fig2)"/>
+  <line x1="415" y1="272" x2="496" y2="308" stroke="#66788A" stroke-width="1.2" marker-end="url(#ah-fw-fig2)"/>
+  <line x1="470" y1="272" x2="632" y2="308" stroke="#66788A" stroke-width="1.2" marker-end="url(#ah-fw-fig2)"/>
+
+  <!-- five document cards: w=124 h=78, centers 88,224,360,496,632, y=312 -->
+  <!-- TLS CPS -->
+  <path d="M 26 312 h 106 l 18 18 v 60 h -124 z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.5"/>
+  <path d="M 132 312 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="88" y="356" text-anchor="middle">TLS</text>
+  <text class="mono" x="88" y="372" text-anchor="middle">CPS</text>
+  <!-- S/MIME CPS -->
+  <path d="M 162 312 h 106 l 18 18 v 60 h -124 z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.5"/>
+  <path d="M 268 312 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="224" y="356" text-anchor="middle">S/MIME</text>
+  <text class="mono" x="224" y="372" text-anchor="middle">CPS</text>
+  <!-- Code Signing CPS -->
+  <path d="M 298 312 h 106 l 18 18 v 60 h -124 z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.5"/>
+  <path d="M 404 312 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="360" y="356" text-anchor="middle">Code Signing</text>
+  <text class="mono" x="360" y="372" text-anchor="middle">CPS</text>
+  <!-- Doc Signing CPS -->
+  <path d="M 434 312 h 106 l 18 18 v 60 h -124 z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.5"/>
+  <path d="M 540 312 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="496" y="356" text-anchor="middle">Doc Signing</text>
+  <text class="mono" x="496" y="372" text-anchor="middle">CPS</text>
+  <!-- Internal policies -->
+  <path d="M 570 312 h 106 l 18 18 v 60 h -124 z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.5"/>
+  <path d="M 676 312 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="632" y="356" text-anchor="middle">Internal</text>
+  <text class="mono" x="632" y="372" text-anchor="middle">Policies</text>
+
+  <text class="cap" x="712" y="345">What does the organization</text>
+  <text class="cap" x="712" y="361">say it does?</text>
+
+  <!-- converge lines from card bottoms to evidence top -->
+  <line x1="88"  y1="390" x2="250" y2="426" stroke="#66788A" stroke-width="1.2" marker-end="url(#ah-fw-fig2)"/>
+  <line x1="224" y1="390" x2="305" y2="426" stroke="#66788A" stroke-width="1.2" marker-end="url(#ah-fw-fig2)"/>
+  <line x1="360" y1="390" x2="360" y2="426" stroke="#66788A" stroke-width="1.2" marker-end="url(#ah-fw-fig2)"/>
+  <line x1="496" y1="390" x2="415" y2="426" stroke="#66788A" stroke-width="1.2" marker-end="url(#ah-fw-fig2)"/>
+  <line x1="632" y1="390" x2="470" y2="426" stroke="#66788A" stroke-width="1.2" marker-end="url(#ah-fw-fig2)"/>
+
+  <!-- Operational evidence -->
+  <rect x="190" y="430" width="340" height="46" rx="9" fill="#F1EDF8" stroke="#6D4A9C" stroke-width="1.5"/>
+  <text class="label" x="360" y="458" text-anchor="middle" fill="#6D4A9C">Operational evidence</text>
+  <line x1="546" y1="453" x2="704" y2="453" stroke="#D3DCE3" stroke-width="1" stroke-dasharray="2 4"/>
+  <text class="cap" x="712" y="458">What actually happened?</text>
+  <line x1="360" y1="476" x2="360" y2="498" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig2)"/>
+
+  <!-- Auditor testing -->
+  <rect x="190" y="502" width="340" height="46" rx="9" fill="#F8ECE9" stroke="#A84A38" stroke-width="1.5"/>
+  <text class="label" x="360" y="530" text-anchor="middle" fill="#A84A38">Auditor testing</text>
+  <line x1="546" y1="525" x2="704" y2="525" stroke="#D3DCE3" stroke-width="1" stroke-dasharray="2 4"/>
+  <text class="cap" x="712" y="512">Does the evidence support</text>
+  <text class="cap" x="712" y="528">the claimed operation</text>
+  <text class="cap" x="712" y="544">of the control?</text>
+  <line x1="360" y1="548" x2="360" y2="570" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig2)"/>
+
+  <!-- Audit conclusion -->
+  <rect x="190" y="574" width="340" height="46" rx="9" fill="#EAF4EE" stroke="#2E7D46" stroke-width="1.5"/>
+  <text class="label" x="360" y="602" text-anchor="middle" fill="#2E7D46">Audit conclusion</text>
+  <line x1="546" y1="597" x2="704" y2="597" stroke="#D3DCE3" stroke-width="1" stroke-dasharray="2 4"/>
+  <text class="cap" x="712" y="592">Are the criteria satisfied</text>
+  <text class="cap" x="712" y="608">within the defined scope?</text>
+
+  <line x1="33" y1="656" x2="927" y2="656" stroke="#D3DCE3" stroke-width="1"/>
+</svg>
+</div></figure>
+  <p>One way to think about this is in terms of the <strong>artifacts</strong> an audit produces and consumes. Here is the structure mapped onto WebTrust for CAs.</p>
+  <figure><div id="fw-fig6"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600"  role="img" aria-label="Artifact map: generic audit artifacts and their WebTrust for CAs instantiations">
+  <style>
+    #fw-fig6 .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    #fw-fig6 .colhead { font: 600 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2px; fill:#66788A; }
+    #fw-fig6 .artifact { font: 600 13.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; }
+    #fw-fig6 .body { font: 12px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#26323F; }
+  </style>
+  <rect x="0" y="0" width="960" height="600" fill="#FFFFFF"/>
+
+  <text class="eyebrow" x="33" y="40">THE WEBTRUST FOR CAs ARTIFACT MAP</text>
+
+  <text class="colhead" x="48" y="76">GENERIC ARTIFACT</text>
+  <text class="colhead" x="300" y="76">WEBTRUST FOR CAs INSTANTIATION</text>
+  <line x1="33" y1="86" x2="927" y2="86" stroke="#D3DCE3" stroke-width="1"/>
+
+  <!-- Row 1: Management assertion (y=92) -->
+  <rect x="33" y="102" width="4" height="38" rx="2" fill="#26323F"/>
+  <text class="artifact" x="48" y="126" fill="#26323F">Management assertion</text>
+  <text class="body" x="300" y="117">The CA&#8217;s assertion letter, management&#8217;s written claim that, for the stated period,</text>
+  <text class="body" x="300" y="134">it operated in conformance with the applicable WebTrust criteria.</text>
+  <line x1="33" y1="150" x2="927" y2="150" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 2: Applicable criteria (y=150) -->
+  <rect x="33" y="160" width="4" height="38" rx="2" fill="#3F5DA8"/>
+  <text class="artifact" x="48" y="184" fill="#3F5DA8">Applicable criteria</text>
+  <text class="body" x="300" y="175">The WebTrust Principles and Criteria for the engagement, WebTrust for CAs plus the</text>
+  <text class="body" x="300" y="192">Baseline / Network Security criteria, which incorporate the CA/Browser Forum requirements.</text>
+  <line x1="33" y1="208" x2="927" y2="208" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 3: Audit scope (y=208) -->
+  <rect x="33" y="218" width="4" height="38" rx="2" fill="#3F5DA8"/>
+  <text class="artifact" x="48" y="242" fill="#3F5DA8">Audit scope</text>
+  <text class="body" x="300" y="233">The specific roots, subordinate CAs, certificate services, locations, and period covered,</text>
+  <text class="body" x="300" y="250">enumerated in the report and the assertion.</text>
+  <line x1="33" y1="266" x2="927" y2="266" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 4: Control matrix (y=266) -->
+  <rect x="33" y="276" width="4" height="38" rx="2" fill="#1E7A6C"/>
+  <text class="artifact" x="48" y="300" fill="#1E7A6C">Control matrix</text>
+  <text class="body" x="300" y="291">The CA&#8217;s mapping of each criterion to its controls, the CP/CPS sections and internal</text>
+  <text class="body" x="300" y="308">policies that document them, and the evidence that demonstrates them.</text>
+  <line x1="33" y1="324" x2="927" y2="324" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 5: Policies & procedures (y=324) -->
+  <rect x="33" y="334" width="4" height="38" rx="2" fill="#A8711C"/>
+  <text class="artifact" x="48" y="358" fill="#A8711C">Policies &amp; procedures</text>
+  <text class="body" x="300" y="349">The CP and CPS (the public, auditable commitments) plus internal</text>
+  <text class="body" x="300" y="366">documents like key management, security, and incident response policies.</text>
+  <line x1="33" y1="382" x2="927" y2="382" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 6: Operational evidence (y=382) -->
+  <rect x="33" y="392" width="4" height="38" rx="2" fill="#6D4A9C"/>
+  <text class="artifact" x="48" y="416" fill="#6D4A9C">Operational evidence</text>
+  <text class="body" x="300" y="407">Key ceremony records, HSM configuration, validation and issuance logs,</text>
+  <text class="body" x="300" y="424">revocation records, training records, change history.</text>
+  <line x1="33" y1="440" x2="927" y2="440" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 7: Auditor testing (y=440) -->
+  <rect x="33" y="450" width="4" height="38" rx="2" fill="#A84A38"/>
+  <text class="artifact" x="48" y="474" fill="#A84A38">Auditor testing</text>
+  <text class="body" x="300" y="465">The licensed practitioner&#8217;s procedures, sampling issuance records, observing</text>
+  <text class="body" x="300" y="482">ceremonies, inspecting configurations against the control matrix.</text>
+  <line x1="33" y1="498" x2="927" y2="498" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 8: Audit conclusion (y=498) -->
+  <rect x="33" y="508" width="4" height="38" rx="2" fill="#2E7D46"/>
+  <text class="artifact" x="48" y="532" fill="#2E7D46">Audit conclusion</text>
+  <text class="body" x="300" y="523">The practitioner&#8217;s report and opinion, published and filed with</text>
+  <text class="body" x="300" y="540">root programs via the CCADB.</text>
+
+  <line x1="33" y1="572" x2="927" y2="572" stroke="#D3DCE3" stroke-width="1"/>
+</svg>
+</div></figure>
+  <p>Two things are worth noticing about this map. First, the WebPKI is unusual in that several of these artifacts are public. The assertion, the report, and the CPS are all published, and root programs consume them through the CCADB.<a href="#r7"><sup>[7]</sup></a> Most SOC 2 artifacts never leave an NDA&rsquo;d data room. Second, the one artifact in the list that is not public is the control matrix, which is exactly the artifact that explains how everything else connects. Relying parties see the commitments and the conclusion, but not the reasoning that links them.</p>
+  <div class="lesson"><div class="klabel">Key lesson</div><p>In the WebPKI the assertion, the report, and the CPS are public. The matrix that connects them is not, and it is the artifact doing the connecting.</p></div>
+
+  <h2 class="sec" id="s4"><span class="n">4</span>The Control Matrix Is the Map</h2>
+  <p>The control matrix translates the audit criteria into something operational and testable. At a minimum, a row of the matrix commonly identifies the following.</p>
+  <table>
+    <tr><th>Element</th><th>Purpose</th></tr>
+    <tr><td>Requirement or criterion</td><td>What the audit framework requires</td></tr>
+    <tr><td>Control</td><td>What the organization does to satisfy the requirement</td></tr>
+    <tr><td>Control owner</td><td>Who is responsible for the control</td></tr>
+    <tr><td>Policy or procedure</td><td>Where the expected practice is documented</td></tr>
+    <tr><td>Evidence</td><td>What demonstrates that the control exists or operated</td></tr>
+    <tr><td>Test procedure</td><td>How the auditor can evaluate the control</td></tr>
+    <tr><td>Scope</td><td>Which systems, products, or services the control applies to</td></tr>
+  </table>
+  <p>The matrix is therefore not merely a checklist. It is an index into the organization&rsquo;s operating model. It is also two things at once, a navigation aid for the auditor and a representation of management&rsquo;s reasoning about why the organization believes it satisfies the requirements.</p>
+  <figure><div id="fw-fig8"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 814"  role="img" aria-label="A control matrix excerpt with real WebPKI requirements, controls, mixed policy sources including IAM, HR, and ISO 27001 personnel controls, and evidence, framed as the map that defines the auditor's task">
+  <style>
+    #fw-fig8 .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    #fw-fig8 .subtitle { font: italic 13px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig8 .assert { font: italic 12px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#26323F; }
+    #fw-fig8 .colhead { font: 600 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2px; }
+    #fw-fig8 .ref { font: 600 12px 'SF Mono',Consolas,Menlo,monospace; fill:#3F5DA8; }
+    #fw-fig8 .cps { font: 600 11px 'SF Mono',Consolas,Menlo,monospace; fill:#7A5514; }
+    #fw-fig8 .cell { font: 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#26323F; }
+    #fw-fig8 .sub { font: 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig8 .cap { font: italic 12.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+  </style>
+  <defs>
+    <marker id="ah-fw-fig8" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#66788A"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="814" fill="#FFFFFF"/>
+
+  <text class="eyebrow" x="33" y="40">THE CONTROL MATRIX</text>
+  <text class="subtitle" x="33" y="62">The map management hands the auditor: the assertion decomposed into testable rows.</text>
+
+  <!-- assertion box feeding the matrix -->
+  <rect x="180" y="76" width="600" height="44" rx="9" fill="#EFF3F6" stroke="#26323F" stroke-width="1.5"/>
+  <text class="assert" x="480" y="103" text-anchor="middle">Management assertion: &#8220;We operated our CA in conformance with the applicable criteria.&#8221;</text>
+  <line x1="480" y1="120" x2="480" y2="144" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig8)"/>
+  <text class="sub" x="496" y="138">decomposed into testable rows</text>
+
+  <!-- column headers: the chain, as columns -->
+  <text class="colhead" x="33" y="162" fill="#3F5DA8">REQUIREMENT</text>
+  <rect x="33" y="168" width="204" height="3" rx="1.5" fill="#3F5DA8"/>
+  <text class="colhead" x="249" y="162" fill="#1E7A6C">CONTROL</text>
+  <rect x="249" y="168" width="240" height="3" rx="1.5" fill="#1E7A6C"/>
+  <text class="colhead" x="501" y="162" fill="#A8711C">POLICY SOURCE</text>
+  <rect x="501" y="168" width="180" height="3" rx="1.5" fill="#A8711C"/>
+  <text class="colhead" x="693" y="162" fill="#6D4A9C">EVIDENCE</text>
+  <rect x="693" y="168" width="234" height="3" rx="1.5" fill="#6D4A9C"/>
+
+  <!-- Row 1: CA key protection (y=190) -->
+  <text class="ref" x="33" y="212">BR &#167;6.2.7</text>
+  <text class="cell" x="33" y="230">CA Private Keys protected in</text>
+  <text class="cell" x="33" y="246">certified cryptographic modules</text>
+  <text class="cell" x="249" y="212">CA keys generated and operated only</text>
+  <text class="cell" x="249" y="228">in FIPS 140 Level 3 validated HSMs;</text>
+  <text class="cell" x="249" y="244">no key material outside the module</text>
+  <text class="cps" x="501" y="212">CPS &#167;6.2</text>
+  <text class="cell" x="501" y="230">Key Management Policy</text>
+  <text class="cell" x="693" y="212">Key ceremony records, HSM</text>
+  <text class="cell" x="693" y="228">configuration, access logs</text>
+  <line x1="33" y1="258" x2="927" y2="258" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 2: domain validation (y=268) -->
+  <text class="ref" x="33" y="290">BR &#167;3.2.2.4</text>
+  <text class="cell" x="33" y="308">Domain control validated</text>
+  <text class="cell" x="33" y="324">before issuance</text>
+  <text class="cell" x="249" y="290">Issuance gated on an approved DCV</text>
+  <text class="cell" x="249" y="306">method; results corroborated from</text>
+  <text class="cell" x="249" y="322">multiple network perspectives</text>
+  <text class="cps" x="501" y="290">CPS &#167;3.2</text>
+  <text class="cell" x="501" y="308">Validation procedures</text>
+  <text class="cell" x="693" y="290">Validation logs, DNS/CAA query</text>
+  <text class="cell" x="693" y="306">records, MPIC results</text>
+  <line x1="33" y1="336" x2="927" y2="336" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 3: access to certificate systems (y=346) -->
+  <text class="ref" x="33" y="368">NetSec (NCSSR)</text>
+  <text class="cell" x="33" y="386">Access to Certificate Systems</text>
+  <text class="cell" x="33" y="402">limited to Trusted Roles</text>
+  <text class="cell" x="249" y="368">MFA enforced on every account able</text>
+  <text class="cell" x="249" y="384">to cause issuance; least privilege;</text>
+  <text class="cell" x="249" y="400">quarterly account reviews</text>
+  <text class="cell" x="501" y="368">Access Control / IAM Policy;</text>
+  <text class="cell" x="501" y="384">ISMS (ISO 27001 aligned)</text>
+  <text class="cell" x="693" y="368">IdP configuration, role rosters,</text>
+  <text class="cell" x="693" y="384">access review records</text>
+  <line x1="33" y1="414" x2="927" y2="414" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 4: personnel training (y=424) -->
+  <text class="ref" x="33" y="446">BR &#167;5.3.3</text>
+  <text class="cell" x="33" y="464">Personnel trained before</text>
+  <text class="cell" x="33" y="480">acting in a Trusted Role</text>
+  <text class="cell" x="249" y="446">Role-based training and skills</text>
+  <text class="cell" x="249" y="462">assessment completed before any</text>
+  <text class="cell" x="249" y="478">Trusted Role authorization</text>
+  <text class="cell" x="501" y="446">Security Training Policy</text>
+  <text class="cell" x="501" y="462">(HR-owned, not the CPS)</text>
+  <text class="cell" x="693" y="446">Training records, skills</text>
+  <text class="cell" x="693" y="462">assessments, role roster</text>
+  <line x1="33" y1="492" x2="927" y2="492" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 5: personnel screening (y=502) -->
+  <text class="ref" x="33" y="524">BR &#167;5.3.1</text>
+  <text class="cell" x="33" y="542">Identity and trustworthiness</text>
+  <text class="cell" x="33" y="558">verified for Trusted Roles</text>
+  <text class="cell" x="249" y="524">Background screening completed and</text>
+  <text class="cell" x="249" y="540">periodically renewed before any</text>
+  <text class="cell" x="249" y="556">Trusted Role access is granted</text>
+  <text class="cell" x="501" y="524">Personnel Screening Policy;</text>
+  <text class="cell" x="501" y="540">ISO 27001 A.6.1 (Screening)</text>
+  <text class="cell" x="693" y="524">Screening records, HR files,</text>
+  <text class="cell" x="693" y="540">Trusted Role grant dates</text>
+  <line x1="33" y1="570" x2="927" y2="570" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 6: revocation (y=580) -->
+  <text class="ref" x="33" y="602">BR &#167;4.9.1.1</text>
+  <text class="cell" x="33" y="620">Revocation within 24 hours</text>
+  <text class="cell" x="33" y="636">of a confirmed report</text>
+  <text class="cell" x="249" y="602">Problem-report intake feeding a</text>
+  <text class="cell" x="249" y="618">revocation workflow with an</text>
+  <text class="cell" x="249" y="634">enforced 24-hour clock</text>
+  <text class="cps" x="501" y="602">CPS &#167;4.9</text>
+  <text class="cell" x="501" y="620">Incident Response procedure</text>
+  <text class="cell" x="693" y="602">Ticket history, revocation</text>
+  <text class="cell" x="693" y="618">records, CRL/OCSP evidence</text>
+  <line x1="33" y1="648" x2="927" y2="648" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 7: subscriber obligations (y=658) -->
+  <text class="ref" x="33" y="680">BR &#167;9.6.3</text>
+  <text class="cell" x="33" y="698">Subscribers bound to their</text>
+  <text class="cell" x="33" y="714">obligations by agreement</text>
+  <text class="cell" x="249" y="680">ACME requires Subscriber Agreement</text>
+  <text class="cell" x="249" y="696">acceptance before any order</text>
+  <text class="cell" x="249" y="712">proceeds; no non-ACME issuance</text>
+  <text class="cps" x="501" y="680">CPS &#167;9.6.3</text>
+  <text class="cell" x="501" y="698">Subscriber Agreement</text>
+  <text class="cell" x="693" y="680">ACME account records,</text>
+  <text class="cell" x="693" y="696">issuance logs, published SA</text>
+  <line x1="33" y1="726" x2="927" y2="726" stroke="#D3DCE3" stroke-width="1"/>
+
+  <text class="cap" x="480" y="754" text-anchor="middle">Each row is one trace. The auditor walks every row; the opinion aggregates the results.</text>
+  <text class="sub" x="480" y="773" text-anchor="middle">(illustrative excerpt; real matrices span hundreds of rows and many policy documents)</text>
+
+  <line x1="33" y1="794" x2="927" y2="794" stroke="#D3DCE3" stroke-width="1"/>
+</svg>
+</div></figure>
+  <p>Notice the policy source column. Only some rows resolve to the CPS. Others resolve to an IAM policy, an HR screening policy mapped to ISO 27001,<a href="#r8"><sup>[8]</sup></a> or a training procedure that never appears in the public repository. Real matrices reach further still, into vendor management procedures, business continuity policies, change management procedures, and logging standards. The matrix is the only artifact that ties all of them back to the same set of requirements, which is why the auditor starts there.</p>
+  <p>What is important to understand is that this matrix is the scope of the audit. One matrix covers n policies and procedures, and it produces one audit letter, regardless of the size of n. That is the compression the audit performs. Hundreds of rows, dozens of documents, and thousands of evidence artifacts all collapse into a single opinion. The letter is one page. The matrix is why anyone can believe it.</p>
+  <blockquote>One matrix, n documents, one letter, regardless of n.</blockquote>
+  <p>At its core, the auditor is walking a traceability chain, once for every requirement in scope. The matrix points each requirement to a control, the document that commits to it, and the evidence that should exist if the control operated. The auditor walks each trace end to end and records a conclusion. The opinion is the aggregation of all of those completed traces.</p>
+  <p>A weak matrix hides scope gaps, ambiguous mappings, and unsupported controls. A strong one makes the whole compliance model explicit, and testable, in a single artifact.</p>
+  <div class="lesson"><div class="klabel">Key lesson</div><p>The matrix is the scope of the audit. The opinion is the aggregation of every trace the auditor walks through it.</p></div>
+
+  <div class="partline" id="p2">Part II</div>
+  <h2 class="part">Documents and Evidence</h2>
+
+  <h2 class="sec" id="s5"><span class="n">5</span>CP, CPS, and Where They Live</h2>
+  <p>In the PKI, the two policy documents that matter most are the Certificate Policy and the Certification Practice Statement. The CP states the rules that govern; the CPS describes the practices used to satisfy them. Sometimes the two are collapsed into a single combined CP/CPS document. RFC 3647 gives both the same outline, which is what makes a combined document possible, and what makes it easy for scope to blur.<a href="#r2"><sup>[2]</sup></a></p>
+  <p>The CPS is where the CA&rsquo;s operational commitments live. Among other things, it describes identity validation practices, certificate issuance, certificate profiles, key generation and protection, revocation, incident handling, personnel controls, logging, system security, and repository practices. From an audit perspective it is the most important policy document in the matrix, because it contains the public, auditable statements about what the CA says it does.</p>
+  <p>There is a second, independent dimension, which is coverage. Sometimes a CP/CPS set is scoped to a single certificate type, or a narrow family of them. Other times a single monolithic document set covers everything the CA issues. These are two different axes, combined versus separate and monolithic versus scoped, and they are easy to conflate. We will come back to the second one, because it matters more than it looks.</p>
+  <p>These policy documents live somewhere, and that somewhere usually has change control on it. Someone tracks what changed, who changed it, when, and who approved it. The model is source control, and in some cases it literally is source control, a Git repository with reviews and tagged releases. That matters for the audit, because the repository is itself evidence. The change history demonstrates the document control the CPS claims, and a tagged release answers the question every incident eventually raises. Which version was in force on that date?</p>
+
+  <h2 class="sec" id="s6"><span class="n">6</span>Documentation Is Not Evidence</h2>
+  <p>The policies themselves are not what gets audited. The audit tests actual practice against what the policies claim, and the instrument for that test is evidence, the records of what happened, collected and evaluated against each commitment.</p>
+  <figure><div id="fw-fig5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 482"  role="img" aria-label="A CPS commitment on the left, operational evidence on the right, connected by the control matrix">
+  <style>
+    #fw-fig5 .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    #fw-fig5 .side { font: 600 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2px; }
+    #fw-fig5 .quote { font: italic 13px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#26323F; }
+    #fw-fig5 .note { font: 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig5 .label { font: 600 13.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#1E7A6C; }
+    #fw-fig5 .ev { font: 600 12px 'SF Mono',Consolas,Menlo,monospace; fill:#4E3570; }
+    #fw-fig5 .evsub { font: 10px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig5 .cap { font: italic 13px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+  </style>
+  <defs>
+    <marker id="ah-fw-fig5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#66788A"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="482" fill="#FFFFFF"/>
+
+  <text class="eyebrow" x="33" y="40">DOCUMENTATION IS NOT EVIDENCE</text>
+
+  <!-- left: CPS document -->
+  <text class="side" x="48" y="86" fill="#A8711C">WHAT THE CPS SAYS</text>
+  <path d="M 48 100 h 284 l 26 26 v 254 h -310 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 332 100 v 26 h 26 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <rect x="72" y="130" width="180" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="72" y="146" width="220" height="5" rx="2.5" fill="#DFE6EB"/>
+  <text class="quote" x="72" y="192">&#8220;CA private keys are generated</text>
+  <text class="quote" x="72" y="214">and maintained in approved</text>
+  <text class="quote" x="72" y="236">hardware security modules.&#8221;</text>
+  <rect x="72" y="262" width="220" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="72" y="278" width="164" height="5" rx="2.5" fill="#DFE6EB"/>
+  <text class="note" x="72" y="330">a commitment,</text>
+  <text class="note" x="72" y="346">the intended design of a control</text>
+
+  <!-- middle: control matrix bridge -->
+  <line x1="358" y1="234" x2="394" y2="234" stroke="#66788A" stroke-width="1.5" marker-end="url(#ah-fw-fig5)"/>
+  <rect x="398" y="206" width="164" height="56" rx="9" fill="#E7F3F0" stroke="#1E7A6C" stroke-width="2.5"/>
+  <text class="label" x="480" y="230" text-anchor="middle">Control matrix</text>
+  <text class="evsub" x="480" y="248" text-anchor="middle">connects claim to proof</text>
+  <line x1="562" y1="234" x2="598" y2="234" stroke="#66788A" stroke-width="1.5" marker-end="url(#ah-fw-fig5)"/>
+
+  <!-- right: evidence stack -->
+  <text class="side" x="602" y="86" fill="#6D4A9C">WHAT THE EVIDENCE SHOWS</text>
+  <rect x="602" y="100" width="310" height="56" rx="9" fill="#F1EDF8" stroke="#6D4A9C" stroke-width="1.5"/>
+  <text class="ev" x="626" y="124">Key ceremony records</text>
+  <text class="evsub" x="626" y="142">who, when, witnessed by whom</text>
+
+  <rect x="602" y="170" width="310" height="56" rx="9" fill="#F1EDF8" stroke="#6D4A9C" stroke-width="1.5"/>
+  <text class="ev" x="626" y="194">HSM configuration</text>
+  <text class="evsub" x="626" y="212">modes, roles, firmware state</text>
+
+  <rect x="602" y="240" width="310" height="56" rx="9" fill="#F1EDF8" stroke="#6D4A9C" stroke-width="1.5"/>
+  <text class="ev" x="626" y="264">Access logs</text>
+  <text class="evsub" x="626" y="282">who touched what, and when</text>
+
+  <rect x="602" y="310" width="310" height="56" rx="9" fill="#F1EDF8" stroke="#6D4A9C" stroke-width="1.5"/>
+  <text class="ev" x="626" y="334">Inventory &amp; change records</text>
+  <text class="evsub" x="626" y="352">every key accounted for</text>
+
+  <!-- caption -->
+  <text class="cap" x="480" y="416" text-anchor="middle">Policies establish expectations. Evidence establishes what happened.</text>
+  <text class="cap" x="480" y="436" text-anchor="middle">The control matrix connects the two.</text>
+  <line x1="33" y1="464" x2="927" y2="464" stroke="#D3DCE3" stroke-width="1"/>
+</svg>
+</div></figure>
+  <p>A CPS statement that &ldquo;CA private keys are generated and maintained in approved hardware security modules&rdquo; supports the design of a control. The auditor still needs key ceremony records, HSM configuration, access logs, inventories, and change records to conclude the control operated.</p>
+  <blockquote>Policies establish expectations. Evidence establishes what happened. The control matrix connects the two.</blockquote>
+  <div class="lesson"><div class="klabel">Key lesson</div><p>A policy proves intent. Only evidence proves operation, and the matrix is what pairs each intent with its proof.</p></div>
+
+  <h2 class="sec" id="s7"><span class="n">7</span>Walking One Trace End to End</h2>
+  <p>To make this concrete, consider a single trace. The TLS Baseline Requirements, in section 9.6.3, require the CA to bind its Subscribers to a set of obligations, including protecting their private keys and promptly requesting revocation on suspected compromise.<a href="#r1"><sup>[1]</sup></a> The CA cannot perform this control itself. It can only impose it, and the instrument for imposing it is the Subscriber Agreement.</p>
+  <p>A CA that issues exclusively through ACME (RFC 8555) can turn that legal obligation into a structural control.<a href="#r3"><sup>[3]</sup></a> ACME requires the account holder to accept the Subscriber Agreement before any order proceeds, and records that acceptance on the account. The CPS commits to this arrangement, and the Agreement itself explains the obligations to the Subscriber. Let&rsquo;s Encrypt&rsquo;s Subscriber Agreement and Google Trust Services&rsquo; CPS both show this flow-down landing in practice.<a href="#r9"><sup>[9]</sup></a><a href="#r10"><sup>[10]</sup></a></p>
+  <figure><div id="fw-fig7"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 775"  role="img" aria-label="One trace through the control matrix: BR 9.6.3 subscriber obligations imposed via ACME and the Subscriber Agreement, evidenced and tested">
+  <style>
+    #fw-fig7 .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    #fw-fig7 .subtitle { font: italic 13px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig7 .rail { font: 600 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2px; }
+    #fw-fig7 .t { font: 600 13.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; }
+    #fw-fig7 .tm { font: 600 13px 'SF Mono',Consolas,Menlo,monospace; }
+    #fw-fig7 .body { font: 12px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#26323F; }
+    #fw-fig7 .sub { font: 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig7 .chk { font: 600 12px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#A84A38; }
+  </style>
+  <defs>
+    <marker id="ah-fw-fig7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#66788A"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="775" fill="#FFFFFF"/>
+
+  <text class="eyebrow" x="33" y="40">ONE TRACE THROUGH THE CONTROL MATRIX</text>
+  <text class="subtitle" x="33" y="62">How a requirement on the Subscriber is imposed, documented, and tested.</text>
+
+  <!-- REQUIREMENT -->
+  <text class="rail" x="165" y="134" text-anchor="end" fill="#3F5DA8">REQUIREMENT</text>
+  <rect x="180" y="90" width="720" height="76" rx="9" fill="#EDF1FA" stroke="#3F5DA8" stroke-width="1.5"/>
+  <text class="tm" x="204" y="115" fill="#3F5DA8">TLS BR &#167;9.6.3 Subscriber representations and warranties</text>
+  <text class="body" x="204" y="136">The CA must bind the Subscriber, through a legally enforceable agreement, to obligations that</text>
+  <text class="body" x="204" y="153">include protecting the Private Key and promptly requesting revocation on suspected compromise.</text>
+  <line x1="540" y1="166" x2="540" y2="190" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig7)"/>
+
+  <!-- CONTROL -->
+  <text class="rail" x="165" y="238" text-anchor="end" fill="#1E7A6C">CONTROL</text>
+  <rect x="180" y="194" width="720" height="76" rx="9" fill="#E7F3F0" stroke="#1E7A6C" stroke-width="1.5"/>
+  <text class="t" x="204" y="219" fill="#1E7A6C">All certificate issuance happens via ACME (RFC 8555)</text>
+  <text class="body" x="204" y="240">The protocol requires the account holder to accept the Subscriber Agreement before any</text>
+  <text class="body" x="204" y="257">order proceeds; agreement is captured on the ACME account (termsOfServiceAgreed).</text>
+  <line x1="540" y1="270" x2="540" y2="294" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig7)"/>
+
+  <!-- POLICY: two documents -->
+  <text class="rail" x="165" y="352" text-anchor="end" fill="#A8711C">POLICY</text>
+  <path d="M 180 298 h 308 l 22 22 v 78 h -330 z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 488 298 v 22 h 22 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="tm" x="204" y="326" fill="#7A5514">CPS &#167;9.6.3</text>
+  <text class="body" x="204" y="349">Commits: every Subscriber accepts the</text>
+  <text class="body" x="204" y="366">Agreement before any certificate issues.</text>
+
+  <line x1="514" y1="347" x2="562" y2="347" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig7)"/>
+
+  <path d="M 570 298 h 308 l 22 22 v 78 h -330 z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 878 298 v 22 h 22 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="tm" x="594" y="326" fill="#7A5514">Subscriber Agreement</text>
+  <text class="body" x="594" y="349">Explains the obligation: protect the key,</text>
+  <text class="body" x="594" y="366">report compromise, cease use on revocation.</text>
+
+  <line x1="540" y1="398" x2="540" y2="422" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig7)"/>
+
+  <!-- EVIDENCE: three record chips -->
+  <text class="rail" x="165" y="472" text-anchor="end" fill="#6D4A9C">EVIDENCE</text>
+  <rect x="180" y="426" width="226" height="84" rx="9" fill="#F1EDF8" stroke="#6D4A9C" stroke-width="1.5"/>
+  <text class="tm" x="200" y="452" fill="#4E3570">Issuance logs</text>
+  <text class="sub" x="200" y="472">every certificate traces</text>
+  <text class="sub" x="200" y="488">to an ACME order</text>
+
+  <rect x="427" y="426" width="226" height="84" rx="9" fill="#F1EDF8" stroke="#6D4A9C" stroke-width="1.5"/>
+  <text class="tm" x="447" y="452" fill="#4E3570">Account records</text>
+  <text class="sub" x="447" y="472">termsOfServiceAgreed</text>
+  <text class="sub" x="447" y="488">captured per account</text>
+
+  <rect x="674" y="426" width="226" height="84" rx="9" fill="#F1EDF8" stroke="#6D4A9C" stroke-width="1.5"/>
+  <text class="tm" x="694" y="452" fill="#4E3570">Published SA versions</text>
+  <text class="sub" x="694" y="472">obligation text, dated</text>
+  <text class="sub" x="694" y="488">version history</text>
+
+  <line x1="540" y1="510" x2="540" y2="534" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig7)"/>
+
+  <!-- AUDITOR TEST -->
+  <text class="rail" x="165" y="590" text-anchor="end" fill="#A84A38">AUDITOR TEST</text>
+  <rect x="180" y="538" width="720" height="106" rx="9" fill="#F8ECE9" stroke="#A84A38" stroke-width="1.5"/>
+  <text class="t" x="204" y="563" fill="#A84A38">The auditor walks the trace</text>
+  <text class="body" x="204" y="586"><tspan class="chk">a.</tspan>  Confirm every issuance path goes through ACME, with no side doors.</text>
+  <text class="body" x="204" y="605"><tspan class="chk">b.</tspan>  Confirm ACME refuses issuance without Subscriber Agreement acceptance.</text>
+  <text class="body" x="204" y="624"><tspan class="chk">c.</tspan>  Confirm the Agreement states the obligations &#167;9.6.3 requires.</text>
+  <line x1="540" y1="644" x2="540" y2="668" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig7)"/>
+
+  <!-- CONCLUSION -->
+  <text class="rail" x="165" y="700" text-anchor="end" fill="#2E7D46">CONCLUSION</text>
+  <rect x="330" y="672" width="420" height="56" rx="9" fill="#EAF4EE" stroke="#2E7D46" stroke-width="1.5"/>
+  <text class="t" x="540" y="695" text-anchor="middle" fill="#2E7D46">Trace complete, requirement satisfied</text>
+  <text class="sub" x="540" y="714" text-anchor="middle">one row of the matrix, one conclusion toward the opinion</text>
+
+  <line x1="33" y1="752" x2="927" y2="752" stroke="#D3DCE3" stroke-width="1"/>
+</svg>
+</div></figure>
+  <p>The auditor then walks the trace. They confirm that every issuance path goes through ACME with no side doors, that ACME refuses issuance without acceptance of the Agreement, and that the Agreement actually states what 9.6.3 requires. Evidence backs each check, from issuance logs to account records to the published Agreement with its version history.</p>
+  <p>The first check carries the weight. If any issuance path bypasses ACME, acceptance is no longer enforced by the protocol and the control degrades to a procedure someone has to remember to follow. That is the difference between a control enforced by protocol and one enforced by policy, and it is why ACME-only issuance is such a strong answer to this requirement.</p>
+  <p>This trace also exposes a real limit of the assurance model. The CA can evidence the operation of the control (the agreement was accepted) but not its effect. No CA audit verifies that subscribers actually protect their keys. The audit tests the flow-down, not the behavior, which is why the ecosystem backstops it with the CA-side revocation requirement in 4.9.1.1.<a href="#r1"><sup>[1]</sup></a></p>
+  <div class="lesson"><div class="klabel">Key lesson</div><p>A control enforced by protocol survives staff turnover. A control enforced by procedure survives until someone forgets.</p></div>
+
+  <div class="partline" id="p3">Part III</div>
+  <h2 class="part">The Structural Shift</h2>
+
+  <h2 class="sec" id="s8"><span class="n">8</span>Monolithic Versus Discrete CPS Documents</h2>
+  <p>This takes us back to the coverage axis, discrete versus monolithic CPS documents. Historically, most CAs produced one CP/CPS set covering every certificate type they issued, because that is the easiest way to maintain it.</p>
+  <figure><div id="fw-fig3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 492"  role="img" aria-label="Comparison of one monolithic CPS with interleaved service content versus four discrete service-scoped CPS documents">
+  <style>
+    #fw-fig3 .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    #fw-fig3 .ph { font: 600 14px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#26323F; }
+    #fw-fig3 .cap { font: italic 12px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig3 .mono { font: 600 12px 'SF Mono',Consolas,Menlo,monospace; fill:#7A5514; }
+    #fw-fig3 .monosm { font: 600 9px 'SF Mono',Consolas,Menlo,monospace; fill:#66788A; }
+    #fw-fig3 .docsub { font: 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+  </style>
+  <rect x="0" y="0" width="960" height="492" fill="#FFFFFF"/>
+
+  <text class="eyebrow" x="33" y="40">TWO WAYS TO STRUCTURE A CPS</text>
+
+  <!-- ============ LEFT PANEL: monolithic ============ -->
+  <rect x="32" y="58" width="430" height="374" rx="12" fill="#FBFCFD" stroke="#D3DCE3" stroke-width="1"/>
+  <text class="ph" x="247" y="90" text-anchor="middle">One monolithic CPS</text>
+
+  <!-- big document glyph -->
+  <path d="M 152 112 h 166 l 24 24 v 226 h -190 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 318 112 v 24 h 24 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="235" y="142" text-anchor="middle">CPS</text>
+  <text class="docsub" x="235" y="158" text-anchor="middle">150 pages &#183; all services</text>
+
+  <!-- interleaved text lines and service chips -->
+  <rect x="170" y="176" width="130" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="190" width="36" height="13" rx="6.5" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="monosm" x="188" y="200" text-anchor="middle">TLS</text>
+  <rect x="214" y="194" width="86" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="212" width="126" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="226" width="52" height="13" rx="6.5" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="monosm" x="196" y="236" text-anchor="middle">S/MIME</text>
+  <rect x="230" y="230" width="30" height="13" rx="6.5" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="monosm" x="245" y="240" text-anchor="middle">DS</text>
+  <rect x="268" y="230" width="34" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="250" width="132" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="264" width="30" height="13" rx="6.5" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="monosm" x="185" y="274" text-anchor="middle">CS</text>
+  <rect x="208" y="268" width="94" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="286" width="118" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="300" width="36" height="13" rx="6.5" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="monosm" x="188" y="310" text-anchor="middle">TLS</text>
+  <rect x="214" y="304" width="52" height="13" rx="6.5" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="monosm" x="240" y="314" text-anchor="middle">S/MIME</text>
+  <rect x="170" y="326" width="128" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="340" width="96" height="5" rx="2.5" fill="#DFE6EB"/>
+
+  <text class="cap" x="247" y="392" text-anchor="middle">Which paragraphs apply to which service?</text>
+  <text class="cap" x="247" y="410" text-anchor="middle">Scope requires interpretation.</text>
+
+  <!-- ============ RIGHT PANEL: discrete ============ -->
+  <rect x="498" y="58" width="430" height="374" rx="12" fill="#FBFCFD" stroke="#D3DCE3" stroke-width="1"/>
+  <text class="ph" x="713" y="90" text-anchor="middle">Discrete, service-scoped CPSs</text>
+
+  <!-- 2x2 grid of slim documents: w=175 h=120, x=529/722, y=112/250 -->
+  <!-- TLS -->
+  <path d="M 529 112 h 157 l 18 18 v 102 h -175 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 686 112 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="616" y="146" text-anchor="middle">TLS CPS</text>
+  <rect x="551" y="164" width="130" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="551" y="180" width="112" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="551" y="196" width="122" height="5" rx="2.5" fill="#DFE6EB"/>
+  <!-- S/MIME -->
+  <path d="M 722 112 h 157 l 18 18 v 102 h -175 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 879 112 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="809" y="146" text-anchor="middle">S/MIME CPS</text>
+  <rect x="744" y="164" width="130" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="744" y="180" width="112" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="744" y="196" width="122" height="5" rx="2.5" fill="#DFE6EB"/>
+  <!-- Code Signing -->
+  <path d="M 529 250 h 157 l 18 18 v 102 h -175 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 686 250 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="616" y="284" text-anchor="middle">Code Signing CPS</text>
+  <rect x="551" y="302" width="130" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="551" y="318" width="112" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="551" y="334" width="122" height="5" rx="2.5" fill="#DFE6EB"/>
+  <!-- Doc Signing -->
+  <path d="M 722 250 h 157 l 18 18 v 102 h -175 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 879 250 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="809" y="284" text-anchor="middle">Doc Signing CPS</text>
+  <rect x="744" y="302" width="130" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="744" y="318" width="112" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="744" y="334" width="122" height="5" rx="2.5" fill="#DFE6EB"/>
+
+  <text class="cap" x="713" y="392" text-anchor="middle">Scope is explicit. Each document is read,</text>
+  <text class="cap" x="713" y="410" text-anchor="middle">diffed, and audited independently.</text>
+
+  <!-- bottom tension line -->
+  <text class="cap" x="247" y="456" text-anchor="middle">cheapest for the CA to maintain</text>
+  <text class="cap" x="713" y="456" text-anchor="middle">clearest for everyone else to verify</text>
+  <line x1="33" y1="474" x2="927" y2="474" stroke="#D3DCE3" stroke-width="1"/>
+</svg>
+</div></figure>
+  <p>The trade off is that a monolith is harder to understand, and not just because it is huge. Readers are left asking whether a given paragraph applies to TLS or to all certificate types, whether a validation method is used for S/MIME as well, and whether a revocation commitment covers code signing. Every one of those questions is a scope ambiguity, and in a monolith the scope column of the matrix keeps answering &ldquo;all of them, sort of.&rdquo;</p>
+  <p>There is a deeper mechanism at work. To cover every case in one document, the wording of what the CA actually does has to be weakened. The requirements for TLS, S/MIME, and code signing are not the same, so a single sentence describing all of them can only describe them loosely. The result is language like &ldquo;certificates are validated in accordance with applicable requirements,&rdquo; which is true for every service precisely because it commits to nothing about any of them. Weak wording is not a drafting failure. It is what a monolith requires.</p>
+  <p>And this connects directly back to the matrix, because vague commitments make weak rows. A control that maps to &ldquo;in accordance with applicable requirements&rdquo; gives the auditor almost nothing to test, so the monolith quietly degrades the quality of every trace that passes through it.</p>
+  <p>Discrete, service-scoped documents invert the trade. They are more work for the CA and clearer for everyone else, from relying parties to root programs to auditors to anyone diffing one version against the next. The documentation structure that is easiest for the operator to maintain is not the structure that is easiest for everyone else to understand and verify.</p>
+  <div class="lesson"><div class="klabel">Key lesson</div><p>Weak wording is not a drafting failure. It is what a monolith requires, and it degrades every trace that passes through it.</p></div>
+
+  <h2 class="sec" id="s9"><span class="n">9</span>The Root Programs Have Picked a Side</h2>
+  <p>Recently both Chrome and Apple have pushed CAs in this direction. Chrome&rsquo;s policy says CP/CPS documents should be free standing and focused on a single use case, and it only accepts dedicated TLS hierarchies.<a href="#r4"><sup>[4]</sup></a> Apple now requires single-purpose roots from applicants.<a href="#r5"><sup>[5]</sup></a> Some CAs have used discrete CPS documents for years; others, like DigiCert, are only now making the change.</p>
+  <figure><div id="fw-fig9"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480"  role="img" aria-label="Chrome and Apple root program requirements driving CAs from one multi-purpose CP/CPS to service-scoped CPS documents">
+  <style>
+    #fw-fig9 .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    #fw-fig9 .t { font: 600 13.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#3F5DA8; }
+    #fw-fig9 .sub { font: 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig9 .mono { font: 600 12px 'SF Mono',Consolas,Menlo,monospace; fill:#7A5514; }
+    #fw-fig9 .monosm { font: 600 10.5px 'SF Mono',Consolas,Menlo,monospace; fill:#7A5514; }
+    #fw-fig9 .chip { font: 600 9px 'SF Mono',Consolas,Menlo,monospace; fill:#66788A; }
+    #fw-fig9 .lab { font: italic 12px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig9 .cap { font: italic 13px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+  </style>
+  <defs>
+    <marker id="ah-fw-fig9" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#66788A"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="480" fill="#FFFFFF"/>
+
+  <text class="eyebrow" x="33" y="40">THE PUSH TO DISCRETE</text>
+
+  <!-- root program cards (requirement-indigo: they are the source of the requirement) -->
+  <rect x="120" y="60" width="330" height="66" rx="9" fill="#EDF1FA" stroke="#3F5DA8" stroke-width="1.5"/>
+  <text class="t" x="285" y="84" text-anchor="middle">Chrome Root Program</text>
+  <text class="sub" x="285" y="102" text-anchor="middle">CP/CPS focused on a single use case;</text>
+  <text class="sub" x="285" y="116" text-anchor="middle">dedicated TLS hierarchies only</text>
+
+  <rect x="510" y="60" width="330" height="66" rx="9" fill="#EDF1FA" stroke="#3F5DA8" stroke-width="1.5"/>
+  <text class="t" x="675" y="84" text-anchor="middle">Apple Root Program</text>
+  <text class="sub" x="675" y="102" text-anchor="middle">single-purpose roots required</text>
+  <text class="sub" x="675" y="116" text-anchor="middle">for all new applicants</text>
+
+  <!-- pressure lines onto the transition -->
+  <line x1="285" y1="126" x2="425" y2="247" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig9)"/>
+  <line x1="675" y1="126" x2="525" y2="247" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig9)"/>
+
+  <!-- left: the monolith -->
+  <path d="M 100 180 h 126 l 24 24 v 156 h -150 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 226 180 v 24 h 24 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="175" y="212" text-anchor="middle">CP/CPS</text>
+  <text class="sub" x="175" y="228" text-anchor="middle">all services</text>
+  <rect x="118" y="244" width="110" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="118" y="258" width="34" height="12" rx="6" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="chip" x="135" y="267" text-anchor="middle">TLS</text>
+  <rect x="160" y="261" width="68" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="118" y="278" width="114" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="118" y="292" width="48" height="12" rx="6" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="chip" x="142" y="301" text-anchor="middle">S/MIME</text>
+  <rect x="174" y="295" width="54" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="118" y="312" width="100" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="118" y="326" width="86" height="5" rx="2.5" fill="#DFE6EB"/>
+
+  <!-- transition arrow -->
+  <path d="M 300 256 L 598 256 L 598 240 L 648 271 L 598 302 L 598 286 L 300 286 Z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.6"/>
+
+  <!-- right: the discrete set (2x2) -->
+  <path d="M 675 180 h 94 l 18 18 v 62 h -112 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 769 180 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="monosm" x="731" y="228" text-anchor="middle">TLS CPS</text>
+  <path d="M 799 180 h 94 l 18 18 v 62 h -112 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 893 180 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="monosm" x="855" y="228" text-anchor="middle">S/MIME CPS</text>
+  <path d="M 675 272 h 94 l 18 18 v 62 h -112 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 769 272 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="monosm" x="731" y="320" text-anchor="middle">Code Sign CPS</text>
+  <path d="M 799 272 h 94 l 18 18 v 62 h -112 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 893 272 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="monosm" x="855" y="320" text-anchor="middle">Doc Sign CPS</text>
+
+  <!-- panel labels -->
+  <text class="lab" x="175" y="392" text-anchor="middle">one multi-purpose CP/CPS</text>
+  <text class="lab" x="793" y="392" text-anchor="middle">service-scoped CPS per family</text>
+
+  <text class="cap" x="480" y="432" text-anchor="middle">Scope precision is becoming a condition of trust.</text>
+
+  <line x1="33" y1="458" x2="927" y2="458" stroke="#D3DCE3" stroke-width="1"/>
+</svg>
+</div></figure>
+  <p>Note what this does to the audit. The matrix stays one matrix and the letter stays one letter, but the rows now point at commitments precise enough to test. The root programs are not asking for more documents for their own sake. They are asking for better rows.</p>
+  <blockquote>Scope precision is becoming a condition of trust.</blockquote>
+
+  <h2 class="sec" id="s10"><span class="n">10</span>Why This Becomes an Automation Problem</h2>
+  <p>Once a CA must maintain multiple service-specific CPS documents, document editing becomes a systems problem. Suppose five CPS documents each contain 80 pages of shared material and 40 pages of service-specific material. A single change to a common practice must be identified in every affected document, applied consistently, reviewed, approved, published, mapped into the matrix, and evidenced. Manual duplication makes drift a near certainty. One document says one thing while another retains older language. Even when the underlying practice is correct, the documentation becomes internally inconsistent, and that inconsistency is itself an assurance problem.</p>
+  <p>A more scalable model is to maintain common policy content as structured source material while producing separate, scoped outputs.</p>
+  <figure><div id="fw-fig4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540"  role="img" aria-label="Common policy source feeding scoped content sets through a publication system into discrete CPS outputs">
+  <style>
+    #fw-fig4 .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    #fw-fig4 .label { font: 600 14px 'Segoe UI','Helvetica Neue',Arial,sans-serif; }
+    #fw-fig4 .label13 { font: 600 13px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#26323F; }
+    #fw-fig4 .boxsub { font: 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig4 .cap { font: italic 12.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    #fw-fig4 .mono { font: 600 13px 'SF Mono',Consolas,Menlo,monospace; fill:#7A5514; }
+  </style>
+  <defs>
+    <marker id="ah-fw-fig4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#66788A"/>
+    </marker>
+    <marker id="ahAmber-fw-fig4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#A8711C"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="540" fill="#FFFFFF"/>
+
+  <text class="eyebrow" x="33" y="40">COMMON SOURCE, DISCRETE OUTPUTS</text>
+
+  <!-- Common policy source -->
+  <rect x="330" y="64" width="300" height="56" rx="9" fill="#FAF2E3" stroke="#A8711C" stroke-width="2"/>
+  <text class="label" x="480" y="88" text-anchor="middle" fill="#A8711C">Common policy source</text>
+  <text class="boxsub" x="480" y="106" text-anchor="middle">shared commitments, maintained once</text>
+
+  <!-- fan arrows to three content sets -->
+  <line x1="410" y1="120" x2="252" y2="166" stroke="#A8711C" stroke-width="1.6" marker-end="url(#ahAmber-fw-fig4)"/>
+  <line x1="480" y1="120" x2="480" y2="166" stroke="#A8711C" stroke-width="1.6" marker-end="url(#ahAmber-fw-fig4)"/>
+  <line x1="550" y1="120" x2="708" y2="166" stroke="#A8711C" stroke-width="1.6" marker-end="url(#ahAmber-fw-fig4)"/>
+
+  <!-- three scoped content sets: w=190 h=52, centers 240/480/720, y=170 -->
+  <rect x="145" y="170" width="190" height="52" rx="9" fill="#F4F7F9" stroke="#9AA9B5" stroke-width="1.4"/>
+  <text class="label13" x="240" y="192" text-anchor="middle">TLS content</text>
+  <text class="boxsub" x="240" y="209" text-anchor="middle">common + TLS-specific</text>
+
+  <rect x="385" y="170" width="190" height="52" rx="9" fill="#F4F7F9" stroke="#9AA9B5" stroke-width="1.4"/>
+  <text class="label13" x="480" y="192" text-anchor="middle">S/MIME content</text>
+  <text class="boxsub" x="480" y="209" text-anchor="middle">common + S/MIME-specific</text>
+
+  <rect x="625" y="170" width="190" height="52" rx="9" fill="#F4F7F9" stroke="#9AA9B5" stroke-width="1.4"/>
+  <text class="label13" x="720" y="192" text-anchor="middle">Code Signing content</text>
+  <text class="boxsub" x="720" y="209" text-anchor="middle">common + CS-specific</text>
+
+  <!-- arrows into publication system -->
+  <line x1="240" y1="222" x2="240" y2="252" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig4)"/>
+  <line x1="480" y1="222" x2="480" y2="252" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig4)"/>
+  <line x1="720" y1="222" x2="720" y2="252" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig4)"/>
+
+  <!-- Publication system bar -->
+  <rect x="120" y="256" width="720" height="54" rx="9" fill="#E7F3F0" stroke="#1E7A6C" stroke-width="2"/>
+  <text class="label" x="480" y="279" text-anchor="middle" fill="#1E7A6C">Publication system</text>
+  <text class="boxsub" x="480" y="297" text-anchor="middle">review &#183; approval &#183; rendering &#183; change history</text>
+
+  <!-- arrows to outputs -->
+  <line x1="240" y1="310" x2="240" y2="340" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig4)"/>
+  <line x1="480" y1="310" x2="480" y2="340" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig4)"/>
+  <line x1="720" y1="310" x2="720" y2="340" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah-fw-fig4)"/>
+
+  <!-- three CPS output documents: w=170 h=104, centers 240/480/720, y=344 -->
+  <path d="M 155 344 h 152 l 18 18 v 86 h -170 z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 307 344 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="240" y="392" text-anchor="middle">TLS CPS</text>
+  <text class="boxsub" x="240" y="411" text-anchor="middle">discrete, scoped output</text>
+
+  <path d="M 395 344 h 152 l 18 18 v 86 h -170 z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 547 344 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="480" y="392" text-anchor="middle">S/MIME CPS</text>
+  <text class="boxsub" x="480" y="411" text-anchor="middle">discrete, scoped output</text>
+
+  <path d="M 635 344 h 152 l 18 18 v 86 h -170 z" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 787 344 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="720" y="392" text-anchor="middle">Code Signing CPS</text>
+  <text class="boxsub" x="720" y="411" text-anchor="middle">discrete, scoped output</text>
+
+  <!-- closing caption -->
+  <text class="cap" x="480" y="478" text-anchor="middle">A change to a shared commitment is made once at the source&#8230;</text>
+  <text class="cap" x="480" y="497" text-anchor="middle">&#8230;and lands consistently in every scoped output.</text>
+
+  <line x1="33" y1="522" x2="927" y2="522" stroke="#D3DCE3" stroke-width="1"/>
+</svg>
+</div></figure>
+  <p>Shared commitments are maintained once. Service-specific material remains independently scoped. The outputs are still discrete from the perspective of readers, auditors, and root programs, but a change to a shared commitment is made once at the source and lands consistently in every scoped output. The problem changes from document duplication to controlled document generation.</p>
+  <p>One consequence of that shift is worth stating plainly. Once the published documents are generated artifacts, the audit binds to the rendered output rather than to the source, so every published version has to be pinned and retained alongside the source revision it came from. The change control on the generation pipeline then becomes evidence in its own right, in exactly the way the document repository already was.</p>
+  <p>Which is the point to close on. Management says what is true. The framework says what must be true. The control matrix explains why management believes it is true, and defines the scope of the audit. Policies and procedures, from the CPS to IAM, HR, vendor management, and business continuity documents, describe how the organization is supposed to operate. Evidence shows what actually happened. The auditor walks every trace, and the opinion is the aggregation of the results. The root programs are now demanding that the public end of this structure be scoped precisely enough to test, which improves assurance for the ecosystem, multiplies the documentation burden for the CA, and makes policy publication a structured, automated system rather than a collection of manually maintained documents. Modern assurance depends not just on having controls, but on maintaining reliable traceability between requirements, assertions, controls, documentation, evidence, and actual operation.</p>
+  <div class="lesson"><div class="klabel">Key lesson</div><p>The problem changes from document duplication to controlled document generation, and the audit is why the change is worth it.</p></div>
+
+  <div class="limits">
+    <h3>What this post does not establish</h3>
+    <p>The limits. The control matrix shown in section 4 is an illustrative excerpt rather than a real CA&rsquo;s matrix, and real matrices run to hundreds of rows. The characterization of the Chrome and Apple root program positions reflects their published policies as of mid 2026 and both programs revise policy regularly. The ACME trace in section 7 describes one strong architecture for satisfying 9.6.3, not the only compliant one, and many CAs satisfy the requirement through portal workflows and signed agreements instead. The claim that most CAs historically ran monolithic CP/CPS sets is drawn from experience with the ecosystem rather than from a systematic survey, and counting document structures across the CCADB corpus would be the honest way to test it.</p>
+  </div>
+
+  <div class="sources">
+    <h3>Sources</h3>
+    <ol>
+      <li id="r1">CA/Browser Forum, <a href="https://cabforum.org/working-groups/server/baseline-requirements/requirements/">Baseline Requirements for the Issuance and Management of Publicly-Trusted TLS Server Certificates</a>, sections 3.2.2.4, 4.9.1.1, 5.3, 6.2.7, 8.1, and 9.6.3.</li>
+      <li id="r2">IETF, <a href="https://datatracker.ietf.org/doc/html/rfc3647">RFC 3647, Certificate Policy and Certification Practices Framework</a>.</li>
+      <li id="r3">IETF, <a href="https://datatracker.ietf.org/doc/html/rfc8555">RFC 8555, Automatic Certificate Management Environment (ACME)</a>, including agreement to terms of service at account creation.</li>
+      <li id="r4">Google, <a href="https://googlechrome.github.io/chromerootprogram/">Chrome Root Program Policy</a>, on single use case CP/CPS documents and dedicated TLS server authentication hierarchies.</li>
+      <li id="r5">Apple, <a href="https://www.apple.com/certificateauthority/ca_program.html">Apple Root Certificate Program</a>, section 2.1.3 on single-purpose root CAs for applicants.</li>
+      <li id="r6">CPA Canada, <a href="https://www.cpacanada.ca/en/business-and-accounting-resources/audit-and-assurance/overview-of-webtrust-services/principles-and-criteria">WebTrust Principles and Criteria for Certification Authorities</a>.</li>
+      <li id="r7">CCADB, <a href="https://www.ccadb.org/">Common CA Database</a>, where CA policy documents and audit reports are disclosed to root programs.</li>
+      <li id="r8">ISO/IEC 27001:2022, Annex A, people controls including A.6.1 Screening.</li>
+      <li id="r9">Let&rsquo;s Encrypt, <a href="https://letsencrypt.org/documents/">Subscriber Agreement</a>, an example of the 9.6.3 flow-down as a direct subscriber warranty.</li>
+      <li id="r10">Google Trust Services, <a href="https://pki.goog/repository/">Certification Practice Statement</a>, section 9.6.3 subscriber obligations.</li>
+    </ol>
+  </div>
+
+  <div class="quiz" id="quiz">
+    <h3>&#10003; Check your understanding</h3>
+    <p class="qintro">Ten questions on assertions, matrices, and why document scope matters. Options shuffle every run.</p>
+    <div id="qbox"><button class="qbtn" id="qstart">Start the quiz</button></div>
+  </div>
+
+  <footer>
+    <p>Related. <a href="https://rmhrisk.github.io/continuous-assurance/">Why Continuous Assurance Did Not Happen Until Now</a> &middot; <a href="https://rmhrisk.github.io/assurance-model/">The Assurance Model Was Built for a World That No Longer Exists</a> &middot; <a href="https://rmhrisk.github.io/classical-webpki/">A Deep Dive on the Classical WebPKI</a> &middot; <a href="https://unmitigatedrisk.com/">Unmitigated Risk</a>, essays on PKI, privacy, and digital identity.</p>
+  </footer>
+</main>
+
+<script>
+const QUESTIONS = [
+  { q: "What is a management assertion?",
+    a: "Management's claim about the system, which the audit exists to test",
+    w: ["The auditor's summary of what they found", "A list of every control the organization operates", "The legal contract between auditor and client"],
+    e: "The assertion is the object under test, and the audit decides whether it is fairly stated." },
+  { q: "What distinguishes a SOC 2 Type 2 report from a Type 1?",
+    a: "It evaluates whether controls operated effectively over a period, not just their design at a point in time",
+    w: ["It covers financial reporting instead of security", "It is issued without a management assertion", "It is performed by a regulator instead of an auditor"],
+    e: "Type 1 evaluates design at a point in time while Type 2 tests operating effectiveness over a period." },
+  { q: "What does a row of the control matrix connect?",
+    a: "A requirement to a control, the document that commits to it, and the evidence that shows it operated",
+    w: ["A policy to the employee who wrote it", "An auditor to their engagement letter", "A certificate to its private key"],
+    e: "Each row is one trace, from requirement to control to document to evidence." },
+  { q: "A matrix spans forty policies and procedures. How many audit letters result?",
+    a: "One, regardless of how many documents the matrix covers",
+    w: ["One per policy document", "One per certificate type", "One per auditor on the engagement"],
+    e: "One matrix covers n documents and produces one letter, whatever n is." },
+  { q: "Which of these is evidence rather than documentation?",
+    a: "Key ceremony records showing who generated a key and when",
+    w: ["A CPS section committing to HSM use", "A key management policy", "A statement in the audit scope"],
+    e: "Records of what happened are evidence, while policies only state intent." },
+  { q: "In the section 9.6.3 trace, which auditor check carries the most weight?",
+    a: "Confirming that no issuance path bypasses ACME",
+    w: ["Confirming the Agreement is written in English", "Confirming the CPS is published as a PDF", "Confirming subscribers actually protect their keys"],
+    e: "If anything bypasses ACME, acceptance is no longer enforced by the protocol." },
+  { q: "Why does a monolithic CPS tend toward weak wording?",
+    a: "One sentence must cover services whose requirements differ, so it can only describe them loosely",
+    w: ["CAs are prohibited from writing precise commitments", "Auditors require vague language", "RFC 3647 forbids service-specific sections"],
+    e: "One sentence covering services with different requirements can only describe them loosely." },
+  { q: "What have the Chrome and Apple root programs pushed CAs toward?",
+    a: "Single use case policy documents and single-purpose hierarchies",
+    w: ["Abandoning WebTrust audits entirely", "Merging all documents into one combined CP/CPS", "Publishing their control matrices"],
+    e: "Both programs push toward single use case documents and single-purpose hierarchies." },
+  { q: "What does a common-source publication model change?",
+    a: "The problem shifts from document duplication to controlled document generation",
+    w: ["It removes the need for review and approval", "It merges all services into one CPS", "It replaces the audit with automated checks"],
+    e: "Shared commitments are maintained once and land consistently in every scoped output." },
+  { q: "Which artifact in the WebPKI audit package is not public?",
+    a: "The control matrix",
+    w: ["The management assertion", "The CPS", "The audit report"],
+    e: "The assertion, report, and CPS are published, while the matrix stays private." },
+];
+
+function shuffle(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+
+const qbox = document.getElementById("qbox");
+let idx = 0, score = 0, deck = [];
+
+function startQuiz() {
+  idx = 0; score = 0;
+  deck = QUESTIONS.map(item => ({
+    q: item.q, e: item.e,
+    opts: shuffle([{ t: item.a, ok: true }, ...item.w.map(t => ({ t, ok: false }))]),
+  }));
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const item = deck[idx];
+  qbox.innerHTML = "<div class='q-progress'>Question " + (idx + 1) + " of " + deck.length +
+    " &middot; Score " + score + "</div>" +
+    "<div class='q-question'>" + item.q + "</div>" +
+    item.opts.map((o, j) => "<button class='q-opt' data-j='" + j + "'>" + o.t + "</button>").join("") +
+    "<div class='q-explain' id='qexp' style='display:none'></div>" +
+    "<button class='qbtn' id='qnext' style='display:none'></button>";
+  qbox.querySelectorAll(".q-opt").forEach(btn => btn.addEventListener("click", () => answer(parseInt(btn.dataset.j))));
+}
+
+function answer(j) {
+  const item = deck[idx];
+  const buttons = qbox.querySelectorAll(".q-opt");
+  buttons.forEach((btn, k) => {
+    btn.disabled = true;
+    if (item.opts[k].ok) btn.classList.add("correct");
+    else if (k === j) btn.classList.add("wrong");
+  });
+  if (item.opts[j].ok) score++;
+  const exp = document.getElementById("qexp");
+  exp.textContent = item.e;
+  exp.style.display = "block";
+  qbox.querySelector(".q-progress").innerHTML = "Question " + (idx + 1) + " of " + deck.length + " &middot; Score " + score;
+  const next = document.getElementById("qnext");
+  next.textContent = idx + 1 < deck.length ? "Next question" : "See results";
+  next.style.display = "inline-block";
+  next.addEventListener("click", () => { idx++; idx < deck.length ? renderQuestion() : renderResults(); });
+}
+
+function renderResults() {
+  let verdict;
+  if (score >= 9) verdict = "You could hand this to an auditor.";
+  else if (score >= 7) verdict = "Solid. The matrix has no secrets from you.";
+  else if (score >= 4) verdict = "The chain is there. Walk it once more.";
+  else verdict = "Start again from the management assertion.";
+  qbox.innerHTML = "<div class='q-progress'>Results</div>" +
+    "<div class='q-score'>" + score + " of " + deck.length + "</div>" +
+    "<div class='q-verdict'>" + verdict + "</div>" +
+    "<button class='qbtn' id='qagain'>Try again</button>";
+  document.getElementById("qagain").addEventListener("click", startQuiz);
+}
+
+document.getElementById("qstart").addEventListener("click", startQuiz);
+</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 492" width="960" height="492" role="img" aria-label="Comparison of one monolithic CPS with interleaved service content versus four discrete service-scoped CPS documents">
+  <style>
+    .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    .ph { font: 600 14px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#26323F; }
+    .cap { font: italic 12px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    .mono { font: 600 12px 'SF Mono',Consolas,Menlo,monospace; fill:#7A5514; }
+    .monosm { font: 600 9px 'SF Mono',Consolas,Menlo,monospace; fill:#66788A; }
+    .docsub { font: 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+  </style>
+  <rect x="0" y="0" width="960" height="492" fill="#FFFFFF"/>
+
+  <text class="eyebrow" x="33" y="40">TWO WAYS TO STRUCTURE A CPS</text>
+
+  <!-- ============ LEFT PANEL: monolithic ============ -->
+  <rect x="32" y="58" width="430" height="374" rx="12" fill="#FBFCFD" stroke="#D3DCE3" stroke-width="1"/>
+  <text class="ph" x="247" y="90" text-anchor="middle">One monolithic CPS</text>
+
+  <!-- big document glyph -->
+  <path d="M 152 112 h 166 l 24 24 v 226 h -190 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 318 112 v 24 h 24 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="235" y="142" text-anchor="middle">CPS</text>
+  <text class="docsub" x="235" y="158" text-anchor="middle">150 pages &#183; all services</text>
+
+  <!-- interleaved text lines and service chips -->
+  <rect x="170" y="176" width="130" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="190" width="36" height="13" rx="6.5" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="monosm" x="188" y="200" text-anchor="middle">TLS</text>
+  <rect x="214" y="194" width="86" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="212" width="126" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="226" width="52" height="13" rx="6.5" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="monosm" x="196" y="236" text-anchor="middle">S/MIME</text>
+  <rect x="230" y="230" width="30" height="13" rx="6.5" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="monosm" x="245" y="240" text-anchor="middle">DS</text>
+  <rect x="268" y="230" width="34" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="250" width="132" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="264" width="30" height="13" rx="6.5" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="monosm" x="185" y="274" text-anchor="middle">CS</text>
+  <rect x="208" y="268" width="94" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="286" width="118" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="300" width="36" height="13" rx="6.5" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="monosm" x="188" y="310" text-anchor="middle">TLS</text>
+  <rect x="214" y="304" width="52" height="13" rx="6.5" fill="#FFFFFF" stroke="#9AA9B5" stroke-width="1"/>
+  <text class="monosm" x="240" y="314" text-anchor="middle">S/MIME</text>
+  <rect x="170" y="326" width="128" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="170" y="340" width="96" height="5" rx="2.5" fill="#DFE6EB"/>
+
+  <text class="cap" x="247" y="392" text-anchor="middle">Which paragraphs apply to which service?</text>
+  <text class="cap" x="247" y="410" text-anchor="middle">Scope requires interpretation.</text>
+
+  <!-- ============ RIGHT PANEL: discrete ============ -->
+  <rect x="498" y="58" width="430" height="374" rx="12" fill="#FBFCFD" stroke="#D3DCE3" stroke-width="1"/>
+  <text class="ph" x="713" y="90" text-anchor="middle">Discrete, service-scoped CPSs</text>
+
+  <!-- 2x2 grid of slim documents: w=175 h=120, x=529/722, y=112/250 -->
+  <!-- TLS -->
+  <path d="M 529 112 h 157 l 18 18 v 102 h -175 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 686 112 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="616" y="146" text-anchor="middle">TLS CPS</text>
+  <rect x="551" y="164" width="130" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="551" y="180" width="112" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="551" y="196" width="122" height="5" rx="2.5" fill="#DFE6EB"/>
+  <!-- S/MIME -->
+  <path d="M 722 112 h 157 l 18 18 v 102 h -175 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 879 112 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="809" y="146" text-anchor="middle">S/MIME CPS</text>
+  <rect x="744" y="164" width="130" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="744" y="180" width="112" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="744" y="196" width="122" height="5" rx="2.5" fill="#DFE6EB"/>
+  <!-- Code Signing -->
+  <path d="M 529 250 h 157 l 18 18 v 102 h -175 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 686 250 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="616" y="284" text-anchor="middle">Code Signing CPS</text>
+  <rect x="551" y="302" width="130" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="551" y="318" width="112" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="551" y="334" width="122" height="5" rx="2.5" fill="#DFE6EB"/>
+  <!-- Doc Signing -->
+  <path d="M 722 250 h 157 l 18 18 v 102 h -175 z" fill="#FFFFFF" stroke="#A8711C" stroke-width="1.6"/>
+  <path d="M 879 250 v 18 h 18 z" fill="#F0DFBE" stroke="#A8711C" stroke-width="1.2"/>
+  <text class="mono" x="809" y="284" text-anchor="middle">Doc Signing CPS</text>
+  <rect x="744" y="302" width="130" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="744" y="318" width="112" height="5" rx="2.5" fill="#DFE6EB"/>
+  <rect x="744" y="334" width="122" height="5" rx="2.5" fill="#DFE6EB"/>
+
+  <text class="cap" x="713" y="392" text-anchor="middle">Scope is explicit. Each document is read,</text>
+  <text class="cap" x="713" y="410" text-anchor="middle">diffed, and audited independently.</text>
+
+  <!-- bottom tension line -->
+  <text class="cap" x="247" y="456" text-anchor="middle">cheapest for the CA to maintain</text>
+  <text class="cap" x="713" y="456" text-anchor="middle">clearest for everyone else to verify</text>
+  <line x1="33" y1="474" x2="927" y2="474" stroke="#D3DCE3" stroke-width="1"/>
+</svg>

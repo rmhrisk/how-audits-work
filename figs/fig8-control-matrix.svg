@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 814" width="960" height="814" role="img" aria-label="A control matrix excerpt with real WebPKI requirements, controls, mixed policy sources including IAM, HR, and ISO 27001 personnel controls, and evidence, framed as the map that defines the auditor's task">
+  <style>
+    .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    .subtitle { font: italic 13px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    .assert { font: italic 12px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#26323F; }
+    .colhead { font: 600 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2px; }
+    .ref { font: 600 12px 'SF Mono',Consolas,Menlo,monospace; fill:#3F5DA8; }
+    .cps { font: 600 11px 'SF Mono',Consolas,Menlo,monospace; fill:#7A5514; }
+    .cell { font: 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#26323F; }
+    .sub { font: 10.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    .cap { font: italic 12.5px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+  </style>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#66788A"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="814" fill="#FFFFFF"/>
+
+  <text class="eyebrow" x="33" y="40">THE CONTROL MATRIX</text>
+  <text class="subtitle" x="33" y="62">The map management hands the auditor: the assertion decomposed into testable rows.</text>
+
+  <!-- assertion box feeding the matrix -->
+  <rect x="180" y="76" width="600" height="44" rx="9" fill="#EFF3F6" stroke="#26323F" stroke-width="1.5"/>
+  <text class="assert" x="480" y="103" text-anchor="middle">Management assertion: &#8220;We operated our CA in conformance with the applicable criteria.&#8221;</text>
+  <line x1="480" y1="120" x2="480" y2="144" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah)"/>
+  <text class="sub" x="496" y="138">decomposed into testable rows</text>
+
+  <!-- column headers: the chain, as columns -->
+  <text class="colhead" x="33" y="162" fill="#3F5DA8">REQUIREMENT</text>
+  <rect x="33" y="168" width="204" height="3" rx="1.5" fill="#3F5DA8"/>
+  <text class="colhead" x="249" y="162" fill="#1E7A6C">CONTROL</text>
+  <rect x="249" y="168" width="240" height="3" rx="1.5" fill="#1E7A6C"/>
+  <text class="colhead" x="501" y="162" fill="#A8711C">POLICY SOURCE</text>
+  <rect x="501" y="168" width="180" height="3" rx="1.5" fill="#A8711C"/>
+  <text class="colhead" x="693" y="162" fill="#6D4A9C">EVIDENCE</text>
+  <rect x="693" y="168" width="234" height="3" rx="1.5" fill="#6D4A9C"/>
+
+  <!-- Row 1: CA key protection (y=190) -->
+  <text class="ref" x="33" y="212">BR &#167;6.2.7</text>
+  <text class="cell" x="33" y="230">CA Private Keys protected in</text>
+  <text class="cell" x="33" y="246">certified cryptographic modules</text>
+  <text class="cell" x="249" y="212">CA keys generated and operated only</text>
+  <text class="cell" x="249" y="228">in FIPS 140 Level 3 validated HSMs;</text>
+  <text class="cell" x="249" y="244">no key material outside the module</text>
+  <text class="cps" x="501" y="212">CPS &#167;6.2</text>
+  <text class="cell" x="501" y="230">Key Management Policy</text>
+  <text class="cell" x="693" y="212">Key ceremony records, HSM</text>
+  <text class="cell" x="693" y="228">configuration, access logs</text>
+  <line x1="33" y1="258" x2="927" y2="258" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 2: domain validation (y=268) -->
+  <text class="ref" x="33" y="290">BR &#167;3.2.2.4</text>
+  <text class="cell" x="33" y="308">Domain control validated</text>
+  <text class="cell" x="33" y="324">before issuance</text>
+  <text class="cell" x="249" y="290">Issuance gated on an approved DCV</text>
+  <text class="cell" x="249" y="306">method; results corroborated from</text>
+  <text class="cell" x="249" y="322">multiple network perspectives</text>
+  <text class="cps" x="501" y="290">CPS &#167;3.2</text>
+  <text class="cell" x="501" y="308">Validation procedures</text>
+  <text class="cell" x="693" y="290">Validation logs, DNS/CAA query</text>
+  <text class="cell" x="693" y="306">records, MPIC results</text>
+  <line x1="33" y1="336" x2="927" y2="336" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 3: access to certificate systems (y=346) -->
+  <text class="ref" x="33" y="368">NetSec (NCSSR)</text>
+  <text class="cell" x="33" y="386">Access to Certificate Systems</text>
+  <text class="cell" x="33" y="402">limited to Trusted Roles</text>
+  <text class="cell" x="249" y="368">MFA enforced on every account able</text>
+  <text class="cell" x="249" y="384">to cause issuance; least privilege;</text>
+  <text class="cell" x="249" y="400">quarterly account reviews</text>
+  <text class="cell" x="501" y="368">Access Control / IAM Policy;</text>
+  <text class="cell" x="501" y="384">ISMS (ISO 27001 aligned)</text>
+  <text class="cell" x="693" y="368">IdP configuration, role rosters,</text>
+  <text class="cell" x="693" y="384">access review records</text>
+  <line x1="33" y1="414" x2="927" y2="414" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 4: personnel training (y=424) -->
+  <text class="ref" x="33" y="446">BR &#167;5.3.3</text>
+  <text class="cell" x="33" y="464">Personnel trained before</text>
+  <text class="cell" x="33" y="480">acting in a Trusted Role</text>
+  <text class="cell" x="249" y="446">Role-based training and skills</text>
+  <text class="cell" x="249" y="462">assessment completed before any</text>
+  <text class="cell" x="249" y="478">Trusted Role authorization</text>
+  <text class="cell" x="501" y="446">Security Training Policy</text>
+  <text class="cell" x="501" y="462">(HR-owned, not the CPS)</text>
+  <text class="cell" x="693" y="446">Training records, skills</text>
+  <text class="cell" x="693" y="462">assessments, role roster</text>
+  <line x1="33" y1="492" x2="927" y2="492" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 5: personnel screening (y=502) -->
+  <text class="ref" x="33" y="524">BR &#167;5.3.1</text>
+  <text class="cell" x="33" y="542">Identity and trustworthiness</text>
+  <text class="cell" x="33" y="558">verified for Trusted Roles</text>
+  <text class="cell" x="249" y="524">Background screening completed and</text>
+  <text class="cell" x="249" y="540">periodically renewed before any</text>
+  <text class="cell" x="249" y="556">Trusted Role access is granted</text>
+  <text class="cell" x="501" y="524">Personnel Screening Policy;</text>
+  <text class="cell" x="501" y="540">ISO 27001 A.6.1 (Screening)</text>
+  <text class="cell" x="693" y="524">Screening records, HR files,</text>
+  <text class="cell" x="693" y="540">Trusted Role grant dates</text>
+  <line x1="33" y1="570" x2="927" y2="570" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 6: revocation (y=580) -->
+  <text class="ref" x="33" y="602">BR &#167;4.9.1.1</text>
+  <text class="cell" x="33" y="620">Revocation within 24 hours</text>
+  <text class="cell" x="33" y="636">of a confirmed report</text>
+  <text class="cell" x="249" y="602">Problem-report intake feeding a</text>
+  <text class="cell" x="249" y="618">revocation workflow with an</text>
+  <text class="cell" x="249" y="634">enforced 24-hour clock</text>
+  <text class="cps" x="501" y="602">CPS &#167;4.9</text>
+  <text class="cell" x="501" y="620">Incident Response procedure</text>
+  <text class="cell" x="693" y="602">Ticket history, revocation</text>
+  <text class="cell" x="693" y="618">records, CRL/OCSP evidence</text>
+  <line x1="33" y1="648" x2="927" y2="648" stroke="#E7EDF1" stroke-width="1"/>
+
+  <!-- Row 7: subscriber obligations (y=658) -->
+  <text class="ref" x="33" y="680">BR &#167;9.6.3</text>
+  <text class="cell" x="33" y="698">Subscribers bound to their</text>
+  <text class="cell" x="33" y="714">obligations by agreement</text>
+  <text class="cell" x="249" y="680">ACME requires Subscriber Agreement</text>
+  <text class="cell" x="249" y="696">acceptance before any order</text>
+  <text class="cell" x="249" y="712">proceeds; no non-ACME issuance</text>
+  <text class="cps" x="501" y="680">CPS &#167;9.6.3</text>
+  <text class="cell" x="501" y="698">Subscriber Agreement</text>
+  <text class="cell" x="693" y="680">ACME account records,</text>
+  <text class="cell" x="693" y="696">issuance logs, published SA</text>
+  <line x1="33" y1="726" x2="927" y2="726" stroke="#D3DCE3" stroke-width="1"/>
+
+  <text class="cap" x="480" y="754" text-anchor="middle">Each row is one trace. The auditor walks every row; the opinion aggregates the results.</text>
+  <text class="sub" x="480" y="773" text-anchor="middle">(illustrative excerpt; real matrices span hundreds of rows and many policy documents)</text>
+
+  <line x1="33" y1="794" x2="927" y2="794" stroke="#D3DCE3" stroke-width="1"/>
+</svg>

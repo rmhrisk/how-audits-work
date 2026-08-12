@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 240" width="960" height="240" role="img" aria-label="The audit traceability chain: requirement, control, policy or CPS, evidence, auditor test, conclusion">
+  <style>
+    .eyebrow { font: 600 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; letter-spacing: 2.5px; fill:#66788A; }
+    .subtitle { font: italic 13px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+    .label { font: 600 14px 'Segoe UI','Helvetica Neue',Arial,sans-serif; }
+    .sub { font: 11px 'Segoe UI','Helvetica Neue',Arial,sans-serif; fill:#66788A; }
+  </style>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#66788A"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="960" height="240" fill="#FFFFFF"/>
+
+  <text class="eyebrow" x="33" y="40">THE AUDIT TRACEABILITY CHAIN</text>
+  <text class="subtitle" x="33" y="62">Every audit conclusion should trace back, link by link, to a requirement.</text>
+
+  <!-- blocks: w=124, gap=30, x0=33 -->
+  <!-- Requirement -->
+  <rect x="33" y="96" width="124" height="58" rx="9" fill="#EDF1FA" stroke="#3F5DA8" stroke-width="1.5"/>
+  <text class="label" x="95" y="130" text-anchor="middle" fill="#3F5DA8">Requirement</text>
+  <text class="sub" x="95" y="176" text-anchor="middle">what must</text>
+  <text class="sub" x="95" y="191" text-anchor="middle">be true</text>
+  <line x1="161" y1="125" x2="181" y2="125" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah)"/>
+
+  <!-- Control -->
+  <rect x="187" y="96" width="124" height="58" rx="9" fill="#E7F3F0" stroke="#1E7A6C" stroke-width="1.5"/>
+  <text class="label" x="249" y="130" text-anchor="middle" fill="#1E7A6C">Control</text>
+  <text class="sub" x="249" y="176" text-anchor="middle">what the CA does</text>
+  <text class="sub" x="249" y="191" text-anchor="middle">about it</text>
+  <line x1="315" y1="125" x2="335" y2="125" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah)"/>
+
+  <!-- Policy / CPS -->
+  <rect x="341" y="96" width="124" height="58" rx="9" fill="#FAF2E3" stroke="#A8711C" stroke-width="1.5"/>
+  <text class="label" x="403" y="130" text-anchor="middle" fill="#A8711C">Policy / CPS</text>
+  <text class="sub" x="403" y="176" text-anchor="middle">where the practice</text>
+  <text class="sub" x="403" y="191" text-anchor="middle">is documented</text>
+  <line x1="469" y1="125" x2="489" y2="125" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah)"/>
+
+  <!-- Evidence -->
+  <rect x="495" y="96" width="124" height="58" rx="9" fill="#F1EDF8" stroke="#6D4A9C" stroke-width="1.5"/>
+  <text class="label" x="557" y="130" text-anchor="middle" fill="#6D4A9C">Evidence</text>
+  <text class="sub" x="557" y="176" text-anchor="middle">what actually</text>
+  <text class="sub" x="557" y="191" text-anchor="middle">happened</text>
+  <line x1="623" y1="125" x2="643" y2="125" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah)"/>
+
+  <!-- Auditor test -->
+  <rect x="649" y="96" width="124" height="58" rx="9" fill="#F8ECE9" stroke="#A84A38" stroke-width="1.5"/>
+  <text class="label" x="711" y="130" text-anchor="middle" fill="#A84A38">Auditor test</text>
+  <text class="sub" x="711" y="176" text-anchor="middle">does the evidence</text>
+  <text class="sub" x="711" y="191" text-anchor="middle">match the claim</text>
+  <line x1="777" y1="125" x2="797" y2="125" stroke="#66788A" stroke-width="1.4" marker-end="url(#ah)"/>
+
+  <!-- Conclusion -->
+  <rect x="803" y="96" width="124" height="58" rx="9" fill="#EAF4EE" stroke="#2E7D46" stroke-width="1.5"/>
+  <text class="label" x="865" y="130" text-anchor="middle" fill="#2E7D46">Conclusion</text>
+  <text class="sub" x="865" y="176" text-anchor="middle">is the assertion</text>
+  <text class="sub" x="865" y="191" text-anchor="middle">fairly stated</text>
+
+  <line x1="33" y1="218" x2="927" y2="218" stroke="#D3DCE3" stroke-width="1"/>
+</svg>
